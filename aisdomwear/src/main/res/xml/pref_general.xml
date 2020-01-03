@@ -1,0 +1,51 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:key="ais_dom_main_pref_screen">
+        <EditTextPreference
+            android:dialogIcon="@drawable/ic_ais_logo_small_21_29"
+            android:icon="@drawable/ic_ais_logo_small_21_29"
+            android:key="@string/key_setting_app_launchurl"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="@string/title_setting_app_launchurl" />
+        <PreferenceScreen
+            android:icon="@drawable/ic_scan_gate_id_icon"
+            android:key="button_scan_gate_id"
+            android:summary="@string/title_setting_app_launchurl_info_summary"
+            android:title="@string/title_setting_app_launchurl_info_title">
+        </PreferenceScreen>
+        <PreferenceScreen
+            android:icon="@drawable/ic_gate_connection_history"
+            android:key="pref_ais_dom_list_history"
+            android:summary="@string/summary_recent_connections"
+            android:title="@string/title_recent_connections">
+            <intent
+                android:action="android.intent.action.MAIN"
+                android:targetClass="pl.sviete.dom.connhist.AisConnectionsHistoryActivity"
+                android:targetPackage="pl.sviete.dom" />
+        </PreferenceScreen>
+<!--            <ListPreference-->
+<!--                android:defaultValue="@string/default_setting_app_tts_voice"-->
+<!--                android:entries="@array/tts_voice_names"-->
+<!--                android:entryValues="@array/tts_voice_values"-->
+<!--                android:title="@string/title_setting_app_tts_voice"-->
+<!--                android:summary="@string/summary_setting_app_tts_voice"-->
+<!--                android:key="@string/key_setting_app_tts_voice"-->
+<!--                android:icon="@drawable/ic_tts_voice"/>-->
+<!--            <PreferenceScreen android:key="pref_ais_dom_list_gesture"-->
+<!--                android:title="@string/list_gesture"-->
+<!--                android:summary="@string/summary_list_gesture"-->
+<!--                android:icon="@drawable/ic_gesture_icon">-->
+<!--                <intent-->
+<!--                    android:action="android.intent.action.MAIN"-->
+<!--                    android:targetPackage="pl.sviete.dom"-->
+<!--                    android:targetClass="pl.sviete.dom.gesture.GestureListActivity"-->
+<!--                    />-->
+<!--            </PreferenceScreen>-->
+            <PreferenceScreen android:key="pref_ais_dom_version"
+                android:summary="1.0"
+                android:title="www.ai-speaker.com"
+                android:icon="@drawable/ic_app_info">
+            </PreferenceScreen>
+</PreferenceScreen>
+

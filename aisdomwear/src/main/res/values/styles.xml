@@ -1,0 +1,55 @@
+<resources>
+
+
+    <style name="Widget.Button.Toggle" parent="android:Widget">
+        <item name="android:background">@drawable/ic_mic_button_toggle_bg</item>
+        <item name="android:disabledAlpha">?android:attr/disabledAlpha</item>
+    </style>
+
+
+    <style name="CustomProgressBarHorizontal" parent="android:Widget.Holo.ProgressBar.Horizontal">
+        <item name="android:minHeight">5dip</item>
+        <item name="android:maxHeight">5dip</item>
+
+    </style>
+
+    <style name="toggleButton"  parent="android:Widget.Holo.ProgressBar">
+        <item name="android:buttonStyleToggle">@style/Widget.Button.Toggle</item>
+        <item name="android:textOn"></item>
+        <item name="android:textOff"></item>
+    </style>
+
+    <style name="AppThemeActionBar" parent="android:Theme.Black">
+        <item name="android:windowFullscreen">false</item>
+    </style>
+
+    <!--    Welcome wizard-->
+    <style name="welcome_page">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:paddingTop">100dp</item>
+        <item name="android:paddingBottom">30dp</item>
+        <item name="android:clipToPadding">false</item>
+    </style>
+    <style name="text_title">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">30dp</item>
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:layout_marginBottom">8dp</item>
+        <item name="android:fontFamily">sans-serif-light</item>
+    </style>
+    <style name="text_subtitle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">20dp</item>
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:layout_marginBottom">16dp</item>
+        <item name="android:layout_marginLeft">30dp</item>
+        <item name="android:layout_marginRight">30dp</item>
+        <item name="android:fontFamily">sans-serif-thin</item>
+    </style>
+
+</resources>
