@@ -60,13 +60,10 @@
     <string name="title_ais_dom_connections_history">CONNECTIONS HISTORY</string>
 
     <string name="key_setting_app_launchurl">setting_app_launchurl</string>
-    <string name="default_setting_app_launchurl_box">http://127.0.0.1:8180</string>
     <string name="default_setting_app_launchurl"></string>
-    <string name="title_setting_app_launchurl">Gate ID or URL</string>
-    <string name="title_setting_app_launchurl_info_title">Scan your unique Gate ID.</string>
-    <string name="title_setting_app_launchurl_info_summary">You can enter it via qr code scanner.</string>
-    <string name="button_edit_gate_id">Edit</string>
-    <string name="button_scan_gate_id">Scan</string>
+    <string name="title_setting_app_launchurl">Gate ID, URL or PIN*</string>
+    <string name="title_setting_app_launchurl_summary">*PIN from AIS dom gate</string>
+
 
     <string name="title_setting_run_wizard_title">Run configuration wizard.</string>
     <string name="title_setting_run_wizard_summary">You can ran configuration wizard to easy set all settings.</string>

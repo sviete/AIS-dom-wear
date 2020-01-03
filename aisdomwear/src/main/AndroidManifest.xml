@@ -8,7 +8,6 @@
     <uses-feature android:name="android.hardware.camera.front" android:required="false" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-feature android:name="android.hardware.type.watch" />
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -40,7 +39,8 @@
             android:name=".SettingsActivity"
             android:exported="true"
             android:configChanges="locale"
-            android:label="@string/title_activity_settings">
+            android:label="@string/title_activity_settings"
+            android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
                 <category android:name="android.intent.category.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -71,11 +71,6 @@
                 <action android:name="android.intent.action.MAIN"/>
             </intent-filter>
         </activity>
-        <activity android:name="pl.sviete.dom.ScannerActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-            </intent-filter>
-        </activity>
         <activity android:name="pl.sviete.dom.connhist.AisConnectionsHistoryActivity"
             android:label="@string/list_connection_history"
             android:theme="@style/AppThemeActionBar">
@@ -83,7 +78,6 @@
                 <action android:name="android.intent.action.MAIN"/>
             </intent-filter>
         </activity>
-
     </application>
 
 </manifest>

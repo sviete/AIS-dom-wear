@@ -4,11 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.os.Handler;
+import android.os.Looper;
 import android.os.StrictMode;
 import android.preference.PreferenceManager;
 import android.util.Log;
-
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -21,23 +22,15 @@ import java.net.URL;
 import pl.sviete.dom.connhist.AisConnectionHistJSON;
 
 public class Config {
-    public final Context myContext;
+    public static Context myContext = null;
+    public static Config mConfig = null;
     private final SharedPreferences sharedPreferences;
-    private SharedPreferences.OnSharedPreferenceChangeListener prefsChangedListener;
-    public static final String TAG = Context.class.getName();
+    public static final String TAG = Config.class.getName();
 
     public Config(Context appContext) {
         myContext = appContext;
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(appContext);
-    }
-
-    public void startListeningForConfigChanges(SharedPreferences.OnSharedPreferenceChangeListener prefsChangedListener) {
-        this.prefsChangedListener = prefsChangedListener;
-        sharedPreferences.registerOnSharedPreferenceChangeListener(prefsChangedListener);
-    }
-
-    public void stopListeningForConfigChanges() {
-        sharedPreferences.registerOnSharedPreferenceChangeListener(prefsChangedListener);
+        mConfig = this;
     }
 
     private String getStringPref(int resId, int defId) {
@@ -46,15 +39,9 @@ public class Config {
         return pref.length() == 0 ? def : pref;
     }
 
-    private boolean getBoolPref(int resId, int defId) {
-        return sharedPreferences.getBoolean(
-                myContext.getString(resId),
-                Boolean.valueOf(myContext.getString(defId))
-        );
-    }
 
     // GET the answer from server
-    public String getResponseFromServer(String url, int timeout) {
+    public static String getResponseFromServer(String url, int timeout) {
         HttpURLConnection c = null;
         try {
             URL u = new URL(url);
@@ -142,6 +129,27 @@ public class Config {
         return "";
     }
 
+    public static String getGateIdFromCloud(String pin) {
+        // ask cloud for gate id for pin
+        // https://powiedz.co/ords/dom/dom/gate_id_from_pin?pin=1234
+        Log.i(TAG, "getGateIdFromCloud");
+        String url = AisCoreUtils.getAisDomCloudWsUrl(true) + "gate_id_from_pin?pin=" + pin;
+        String severAnswer = getResponseFromServer(url, 10000);
+        if (!severAnswer.equals("")) {
+            try {
+                JSONObject jsonAnswer = new JSONObject(severAnswer);
+                String gateID = jsonAnswer.getString("id");
+                if (gateID.startsWith("dom-")) {
+                    return gateID;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return "andrzej 123";
+    }
+
 
 
     private class checkConnectionUrlJob extends AsyncTask<String, Void, String> {
@@ -194,6 +202,36 @@ public class Config {
     }
 
 
+    public static class checkGateIdForPinJob extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String[] params) {
+            Log.i(TAG, "doInBackground");
+            String pin = params[0];
+            String gateId = getGateIdFromCloud(pin);
+
+            if (gateId.startsWith("dom-")) {
+                mConfig.setAppLaunchUrl(gateId);
+                myContext.startActivity(new Intent(myContext, WatchScreenActivity.class));
+            } else {
+                Handler handler = new Handler(Looper.getMainLooper());
+                handler.post(() -> Toast.makeText(myContext, gateId, Toast.LENGTH_LONG).show());
+            }
+
+
+
+            return gateId;
+
+        }
+
+        @Override
+        protected void onPostExecute(String message) {
+            //process message with url to go
+            Log.i(TAG, "checkGateIdForPinJob onPostExecute");
+        }
+    }
+
+
     public void saveConnToHistory(String localIP, String url, String gate, String user, String desc) {
         try {
             JSONObject mNewConn = new JSONObject();
@@ -212,6 +250,7 @@ public class Config {
         String url;
 
         url = getStringPref(R.string.key_setting_app_launchurl, R.string.default_setting_app_launchurl);
+        Log.i(TAG, "getAppLaunchUrl: " + url);
 
         if (url.startsWith("dom-") && disco) {
             String gateID = url;
@@ -227,55 +266,11 @@ public class Config {
         return url;
     }
 
-    public String getAppRemoteControllerMode() {
-        return getStringPref(R.string.key_setting_app_remotecontrollermode,
-                    R.string.default_setting_app_remotecontrollermode);
-    }
-
-    public Boolean getAppDiscoveryMode() {
-        return getBoolPref(R.string.key_setting_app_discovery, R.string.default_setting_app_discovery);
-    }
-
-
-    public Boolean getAppWizardDone() {
-        return getBoolPref(R.string.default_setting_app_wizard_done, R.string.default_setting_app_wizard_done);
-    }
-
-    public void setAppWizardDone(Boolean done) {
-        SharedPreferences.Editor ed = sharedPreferences.edit();
-        ed.putBoolean(myContext.getString(R.string.default_setting_app_wizard_done), done);
-        ed.apply();
-    }
 
     public void setAppLaunchUrl(String gate) {
-        // this is executed from QR code scan or Gate history only
+        // this is executed from PIN parring or Gate history only
         SharedPreferences.Editor ed = sharedPreferences.edit();
-        ed.putString(myContext.getString(R.string.key_setting_app_launchurl), gate);
-        ed.apply();
-    }
-
-
-    //
-    public void setAppRemoteControllerMode(String mode) {
-        SharedPreferences.Editor ed = sharedPreferences.edit();
-        ed.putString(myContext.getString(R.string.key_setting_app_remotecontrollermode), mode);
-        ed.apply();
-    }
-
-
-    public float getTestZoomLevel() {
-        return Float.valueOf(getStringPref(R.string.key_setting_test_zoomlevel, R.string.default_setting_test_zoomlevel));
-    }
-
-
-    public String getAppTtsVoice() {
-        return getStringPref(R.string.key_setting_app_tts_voice,
-                R.string.default_setting_app_tts_voice);
-    }
-
-    public void setAppTtsVoice(String voice) {
-        SharedPreferences.Editor ed = sharedPreferences.edit();
-        ed.putString(myContext.getString(R.string.key_setting_app_tts_voice), voice);
+        ed.putString("setting_app_launchurl", gate);
         ed.apply();
     }
 
