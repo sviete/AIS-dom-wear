@@ -31,8 +31,8 @@ dependencies {
     implementation 'androidx.percentlayout:percentlayout:1.0.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
-    implementation 'me.dm7.barcodescanner:zbar:1.9.13'
     implementation 'androidx.wear:wear:1.0.0'
     implementation 'com.koushikdutta.async:androidasync:3.0.8'
+    implementation 'androidx.preference:preference:1.1.0'
     compileOnly 'com.google.android.wearable:wearable:2.5.0'
 }
