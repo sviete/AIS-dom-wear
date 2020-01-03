@@ -36,7 +36,6 @@ public class AisConnectionHistAdapter extends ArrayAdapter<AisConnectionHistHold
         TextView connection_local_ip = (TextView) convertView.findViewById(R.id.connection_local_ip);
         TextView connection_user = (TextView) convertView.findViewById(R.id.connection_user);
         TextView connection_description = (TextView) convertView.findViewById(R.id.connection_description);
-        ImageView connection_icon = (ImageView) convertView.findViewById(R.id.id_connection_icon);
         // Populate the data into the template view using the data object
         connection_gate_id.setText(holder.gateID);
         connection_url.setText(holder.connUrl);
@@ -44,13 +43,6 @@ public class AisConnectionHistAdapter extends ArrayAdapter<AisConnectionHistHold
         connection_time.setText(holder.connTime);
         connection_user.setText(holder.connUser);
         connection_description.setText(holder.connDesc);
-
-        if (holder.connUrl.contains("paczka.pro")) {
-            connection_icon.setImageResource(R.drawable.ic_www_connection_from_history);
-        } else {
-            connection_icon.setImageResource(R.drawable.ic_local_connection_from_history);
-        }
-
 
         // Return the completed view to render on screen
         return convertView;
