@@ -191,14 +191,14 @@ public class WatchScreenActivity extends WearableActivity {
     private void onStartSpeechToText() {
         Log.d(TAG, "onStartSpeechToText -> play animation");
 
-        mSttTextView.setText(getString(R.string.key_setting_app_launchurl));
+        mSttTextView.setText(getString(R.string.app_i_am_listening_info));
         mSttTextView.setGravity(Gravity.CENTER_HORIZONTAL);
     }
 
     private void onEndSpeechToText(){
         Log.d(TAG, "onEndSpeechToText -> stop");
 
-        if (mSttTextView.getText().equals(getString(R.string.key_setting_app_launchurl))){
+        if (mSttTextView.getText().equals(getString(R.string.app_i_am_listening_info))){
             mSttTextView.setText("...");
         }
 
