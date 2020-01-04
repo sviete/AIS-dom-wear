@@ -36,6 +36,9 @@
     </string-array>
 
     <string name="app_name">AIS dom</string>
+    <string name="app_add_gate_connection_info">Aby korzystać z aplikacji, dodaj połączenie z bramką AIS dom.</string>
+    <string name="app_get_gate_for_pin_error">Nie można pobrać identyfikatora bramki za pomocą PIN.</string>
+    <string name="app_i_am_listening_info">Słucham Cię...</string>
 
     <string name="aispanel_service_notification_title">Powiedz.co</string>
     <string name="aispanel_service_notification_message">uruchomiony</string>

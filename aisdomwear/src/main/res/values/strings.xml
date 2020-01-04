@@ -33,7 +33,10 @@
         <item>ON_DISPLAY</item>
     </string-array>
 
-    <string name="app_name">AIS dom</string>
+    <string name="app_name">AIS dom Wear</string>
+    <string name="app_add_gate_connection_info">To use the app, add the connection to AIS dom gate.</string>
+    <string name="app_get_gate_for_pin_error">Unable to retrieve gateway ID with PIN.</string>
+    <string name="app_i_am_listening_info">Listening...</string>
 
     <string name="aispanel_service_notification_title">AIS dom</string>
     <string name="aispanel_service_notification_message">runing</string>

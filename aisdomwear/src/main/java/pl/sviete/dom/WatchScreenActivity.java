@@ -8,6 +8,7 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
 import android.support.wearable.activity.WearableActivity;
@@ -19,6 +20,7 @@ import android.view.animation.ScaleAnimation;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import androidx.core.app.ActivityCompat;
@@ -137,7 +139,8 @@ public class WatchScreenActivity extends WearableActivity {
         // to check the url from settings
         mConfig = new Config(getApplicationContext());
         // get app url with discovery
-        Log.i(TAG, mConfig.getAppLaunchUrl(true));
+        String url = mConfig.getAppLaunchUrl(true);
+        Log.i(TAG, url);
 
         IntentFilter filter = new IntentFilter();
         filter.addAction(AisCoreUtils.BROADCAST_ON_END_SPEECH_TO_TEXT);
@@ -148,6 +151,13 @@ public class WatchScreenActivity extends WearableActivity {
 
         //
         super.onStart();
+
+        // go to settings of first start
+        if (url.equals("")){
+            Handler handler = new Handler(Looper.getMainLooper());
+            handler.post(() -> Toast.makeText(getApplicationContext(), getString(R.string.app_add_gate_connection_info), Toast.LENGTH_LONG).show());
+            getApplicationContext().startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
+        }
     }
 
 
@@ -181,14 +191,14 @@ public class WatchScreenActivity extends WearableActivity {
     private void onStartSpeechToText() {
         Log.d(TAG, "onStartSpeechToText -> play animation");
 
-        mSttTextView.setText("Słucham Cię...");
+        mSttTextView.setText(getString(R.string.key_setting_app_launchurl));
         mSttTextView.setGravity(Gravity.CENTER_HORIZONTAL);
     }
 
     private void onEndSpeechToText(){
         Log.d(TAG, "onEndSpeechToText -> stop");
 
-        if (mSttTextView.getText().equals("Słucham Cię...")){
+        if (mSttTextView.getText().equals(getString(R.string.key_setting_app_launchurl))){
             mSttTextView.setText("...");
         }
 

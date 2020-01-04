@@ -139,15 +139,13 @@ public class Config {
             try {
                 JSONObject jsonAnswer = new JSONObject(severAnswer);
                 String gateID = jsonAnswer.getString("id");
-                if (gateID.startsWith("dom-")) {
-                    return gateID;
-                }
+                return gateID;
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
 
-        return "andrzej 123";
+        return myContext.getString(R.string.app_get_gate_for_pin_error);
     }
 
 
@@ -214,11 +212,10 @@ public class Config {
                 mConfig.setAppLaunchUrl(gateId);
                 myContext.startActivity(new Intent(myContext, WatchScreenActivity.class));
             } else {
-                Handler handler = new Handler(Looper.getMainLooper());
-                handler.post(() -> Toast.makeText(myContext, gateId, Toast.LENGTH_LONG).show());
+                mConfig.setAppLaunchUrl("");
             }
-
-
+            Handler handler = new Handler(Looper.getMainLooper());
+            handler.post(() -> Toast.makeText(myContext, gateId, Toast.LENGTH_LONG).show());
 
             return gateId;
 
