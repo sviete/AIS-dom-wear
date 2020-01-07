@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -81,7 +82,7 @@ public class AisConnectionsHistoryActivity extends Activity {
 
 
     public void deleteConnection(View view){
-        RelativeLayout vwParentRow = (RelativeLayout)view.getParent().getParent();
+        FrameLayout vwParentRow = (FrameLayout)view.getParent().getParent();
         TextView tv = vwParentRow.findViewById(R.id.connection_url);
         String mCurrentName = tv.getText().toString();
         AisConnectionHistJSON.delConnection(getApplicationContext(), mCurrentName);
@@ -90,8 +91,8 @@ public class AisConnectionsHistoryActivity extends Activity {
 
 
     public void useConnection(View view){
-        RelativeLayout vwParentRow;
-        vwParentRow = (RelativeLayout) view.getParent();
+        FrameLayout vwParentRow;
+        vwParentRow = (FrameLayout) view.getParent();
 
         TextView tvGate = vwParentRow.findViewById(R.id.connection_gate_id);
         String mCurrentGate = tvGate.getText().toString();

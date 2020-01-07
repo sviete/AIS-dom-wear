@@ -1,7 +1,6 @@
 package pl.sviete.dom;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.Preference;
@@ -91,7 +90,7 @@ public class SettingsActivity extends AppCompatActivity {
             // set info in version
             String versionName = BuildConfig.VERSION_NAME;
             Preference preferenceVersion = findPreference("pref_ais_dom_version");
-            preferenceVersion.setSummary(versionName + " (wear app)");
+            preferenceVersion.setSummary(versionName + " (wear app)\n");
 
             //
             bindPreferenceChangeListener(findPreference(getString(R.string.key_setting_app_launchurl)));

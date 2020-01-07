@@ -1,28 +1,30 @@
-<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:key="ais_dom_main_pref_screen">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:key="ais_dom_main_pref_screen"
+    android:theme="@style/Theme.Wearable">
         <EditTextPreference
             android:dialogIcon="@drawable/ic_ais_logo_small_21_29"
+            android:fitsSystemWindows="true"
             android:icon="@drawable/ic_ais_logo_small_21_29"
-            android:title="@string/title_setting_app_launchurl"
             android:key="@string/key_setting_app_launchurl"
+            android:singleLine="true"
             android:summary="@string/title_setting_app_launchurl_summary"
-            android:selectAllOnFocus="true"
-            android:singleLine="true" />
+            android:title="@string/title_setting_app_launchurl" />
+        />
         <PreferenceScreen
             android:icon="@drawable/ic_gate_connection_history"
             android:key="pref_ais_dom_list_history"
             android:summary="@string/summary_recent_connections"
             android:title="@string/title_recent_connections">
-            <intent
-                android:action="android.intent.action.MAIN"
-                android:targetClass="pl.sviete.dom.connhist.AisConnectionsHistoryActivity"
-                android:targetPackage="pl.sviete.dom" />
+                <intent
+                    android:action="android.intent.action.MAIN"
+                    android:targetClass="pl.sviete.dom.connhist.AisConnectionsHistoryActivity"
+                    android:targetPackage="pl.sviete.dom" />
         </PreferenceScreen>
-        <PreferenceScreen android:key="pref_ais_dom_version"
+        <PreferenceScreen
+            android:icon="@drawable/ic_app_info"
+            android:key="pref_ais_dom_version"
             android:summary="1.0"
-            android:title="www.ai-speaker.com"
-            android:icon="@drawable/ic_app_info">
-        </PreferenceScreen>
+            android:title="www.ai-speaker.com"></PreferenceScreen>
 </PreferenceScreen>
 
