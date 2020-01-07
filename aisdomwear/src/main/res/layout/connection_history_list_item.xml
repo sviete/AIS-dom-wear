@@ -17,6 +17,7 @@
         android:gravity="bottom"
         android:onClick="useConnection"
         android:paddingStart="20dp"
+        android:paddingEnd="20dp"
         android:paddingTop="20dp"
         android:orientation="horizontal">
 
@@ -36,8 +37,8 @@
         android:id="@+id/connections_history_list_rec_desc"
         android:layout_width="fill_parent"
         android:layout_height="55dp"
-        android:layout_marginStart="35dp"
-        android:layout_marginEnd="0dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="40dp"
         android:gravity="start"
         android:onClick="useConnection"
         android:orientation="vertical"
@@ -49,8 +50,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start"
+            android:textAlignment="center"
             android:textColor="@color/colorPrimary"
-            android:textSize="24sp" />
+            android:textSize="20sp" />
     </LinearLayout>
 
     <LinearLayout

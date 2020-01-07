@@ -7,9 +7,12 @@
             android:fitsSystemWindows="true"
             android:icon="@drawable/ic_ais_logo_small_21_29"
             android:key="@string/key_setting_app_launchurl"
-            android:singleLine="true"
+            android:singleLine="false"
+            android:textAlignment="center"
             android:summary="@string/title_setting_app_launchurl_summary"
-            android:title="@string/title_setting_app_launchurl" />
+            android:title="@string/title_setting_app_launchurl"
+            app:dialogTitle=" "
+            style="@style/AppPreference.DialogPreference"/>
         />
         <PreferenceScreen
             android:icon="@drawable/ic_gate_connection_history"

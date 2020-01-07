@@ -96,6 +96,13 @@ public class SettingsActivity extends AppCompatActivity {
             bindPreferenceChangeListener(findPreference(getString(R.string.key_setting_app_launchurl)));
         }
 
+        @Override
+        public void onDisplayPreferenceDialog(Preference preference) {
+            // TODO
+            super.onDisplayPreferenceDialog(preference);
+
+        }
+
     }
 
 
