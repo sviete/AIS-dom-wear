@@ -210,7 +210,9 @@ public class Config {
 
             if (gateId.startsWith("dom-")) {
                 mConfig.setAppLaunchUrl(gateId);
-                myContext.startActivity(new Intent(myContext, WatchScreenActivity.class));
+                Intent i = new Intent(myContext, WatchScreenActivity.class);
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                myContext.startActivity(i);
             } else {
                 mConfig.setAppLaunchUrl("");
             }

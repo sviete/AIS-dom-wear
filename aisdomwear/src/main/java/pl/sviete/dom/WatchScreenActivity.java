@@ -156,7 +156,10 @@ public class WatchScreenActivity extends WearableActivity {
         if (url.equals("")){
             Handler handler = new Handler(Looper.getMainLooper());
             handler.post(() -> Toast.makeText(getApplicationContext(), getString(R.string.app_add_gate_connection_info), Toast.LENGTH_LONG).show());
-            getApplicationContext().startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
+
+            Intent i = new Intent(this, SettingsActivity.class);
+            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            getApplicationContext().startActivity(i);
         }
     }
 
