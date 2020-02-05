@@ -9,8 +9,12 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.provider.Settings;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
+import android.speech.tts.TextToSpeech;
+import android.speech.tts.UtteranceProgressListener;
+import android.speech.tts.Voice;
 import android.support.wearable.activity.WearableActivity;
 import android.util.Log;
 import android.view.Gravity;
@@ -31,7 +35,7 @@ import java.util.Locale;
 
 
 
-public class WatchScreenActivity extends WearableActivity {
+public class WatchScreenActivity extends WearableActivity implements TextToSpeech.OnInitListener{
 
 
     final String TAG = WatchScreenActivity.class.getName();
@@ -40,6 +44,7 @@ public class WatchScreenActivity extends WearableActivity {
     private final int REQUEST_RECORD_PERMISSION = 100;
     private Config mConfig = null;
     private ToggleButton mBtnSpeak;
+    private TextToSpeech mTts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,6 +105,51 @@ public class WatchScreenActivity extends WearableActivity {
 
         // Enables Always-on
         setAmbientEnabled();
+
+        createTTS();
+        //
+
+        // set gate ID
+        Log.i(TAG, "set gate ID");
+        AisCoreUtils.AIS_GATE_ID = "dom-" + Settings.Secure.getString(this.getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
+        Log.i(TAG, "AIS_GATE_ID: " + AisCoreUtils.AIS_GATE_ID);
+    }
+
+    @Override
+    public void onInit(int status) {
+
+        Log.d(TAG, "onInit");
+        if (status != TextToSpeech.ERROR) {
+            int result = mTts.setLanguage(new Locale("pl_PL"));
+            if (result == TextToSpeech.LANG_MISSING_DATA ||
+                    result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                Log.e(TAG, "Language is not available.");
+            }
+
+            if(result == TextToSpeech.SUCCESS) {
+                mTts.setOnUtteranceProgressListener(new UtteranceProgressListener() {
+                    @Override
+                    public void onDone(String utteranceId) {
+                        Log.d(TAG, "TTS finished");
+
+                    }
+
+                    @Override
+                    public void onError(String utteranceId) {
+                        Log.d(TAG, "TTS onError");
+
+                    }
+
+                    @Override
+                    public void onStart(String utteranceId) {
+                        Log.d(TAG, "TTS onStart");
+                    }
+                });
+            };
+        } else {
+            Log.e(TAG, "Could not initialize TextToSpeech.");
+        }
+
     }
 
     private void startTheSpeechToText(){
@@ -147,6 +197,7 @@ public class WatchScreenActivity extends WearableActivity {
         filter.addAction(AisCoreUtils.BROADCAST_ON_START_SPEECH_TO_TEXT);
         filter.addAction(AisCoreUtils.BROADCAST_EVENT_ON_SPEECH_PARTIAL_RESULTS);
         filter.addAction(AisCoreUtils.BROADCAST_EVENT_ON_SPEECH_COMMAND);
+        filter.addAction(AisCoreUtils.BROADCAST_ACTIVITY_SAY_IT);
         mlocalBroadcastManager.registerReceiver(mBroadcastReceiver, filter);
 
         //
@@ -187,6 +238,10 @@ public class WatchScreenActivity extends WearableActivity {
                 Log.i(TAG, AisCoreUtils.BROADCAST_EVENT_ON_SPEECH_COMMAND + " display text.");
                 final String command = intent.getStringExtra(AisCoreUtils.BROADCAST_EVENT_ON_SPEECH_COMMAND_TEXT);
                 onSttFullResult(command);
+            } else if (intent.getAction().equals(AisCoreUtils.BROADCAST_ACTIVITY_SAY_IT)) {
+                Log.d(TAG, AisCoreUtils.BROADCAST_ACTIVITY_SAY_IT + " going to processTTS");
+                final String txtMessage = intent.getStringExtra(AisCoreUtils.BROADCAST_SAY_IT_TEXT);
+                processTTS(txtMessage);
             }
         }
     };
@@ -264,5 +319,83 @@ public class WatchScreenActivity extends WearableActivity {
         if (AisCoreUtils.mSpeech != null) {
             AisCoreUtils.mSpeech.destroy();
         }
+        if (mTts != null) {
+            mTts.stop();
+            mTts.shutdown();
+            mTts = null;
+        }
+    }
+
+    // TTS
+    public void stopSpeechToText(){
+        Log.i(TAG, "Speech started, stoping the tts");
+        try {
+            mTts.stop();
+        } catch (Exception e) {
+            Log.e(TAG, e.toString());
+        }
+    }
+
+    public void createTTS() {
+        Log.i(TAG, "starting TTS initialization");
+        mTts = new TextToSpeech(this, this);
+        mTts.setSpeechRate(1.0f);
+    }
+    private boolean processTTS(String text) {
+        Log.d(TAG, "processTTS Called: " + text);
+
+        // display text
+        final String text_to_disp = text;
+        mSttTextView.setText(text);
+        mSttTextView.setTextSize(22);
+        mSttTextView.setGravity(Gravity.CENTER_HORIZONTAL);
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                //remove text after 4sec
+                String currText = mSttTextView.getText().toString();
+                if (currText.equals(text_to_disp)) {
+                    mSttTextView.setText("");
+                }
+            }
+        }, 4000);
+
+        // STOP current TTS
+        stopSpeechToText();
+
+        String voice = "pl-pl-x-oda-local";
+        float pitch = 1;
+        float rate = 1;
+
+        // speak failed: not bound to TTS engine
+        if (mTts == null){
+            Log.w(TAG, "mTts == null");
+            try {
+                createTTS();
+                return true;
+            }
+            catch (Exception e) {
+                Log.e(TAG, e.toString());
+            }
+        }
+
+        Voice voiceobj = new Voice(
+                voice, new Locale("pl_PL"),
+                Voice.QUALITY_HIGH,
+                Voice.LATENCY_NORMAL,
+                false,
+                null);
+        mTts.setVoice(voiceobj);
+
+
+        //textToSpeech can only cope with Strings with < 4000 characters
+        if(text.length() >= 4000) {
+            text = text.substring(0, 3999);
+        }
+        mTts.speak(text, TextToSpeech.QUEUE_FLUSH, null,"123");
+
+        return true;
+
     }
 }

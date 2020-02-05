@@ -103,8 +103,8 @@ public class AisRecognitionListener implements RecognitionListener {
         LocalBroadcastManager bm = LocalBroadcastManager.getInstance(context);
         bm.sendBroadcast(intent);
 
-        // on phone
-        DomWebInterface.publishMessage( matches.get(0), "speech_command");
+        // publish via interface to gate
+        DomWebInterface.publishMessage( matches.get(0), "speech_command", context);
 
         // reset the timeout error count
         mTimeoutErrorCount = 0;
@@ -161,15 +161,7 @@ public class AisRecognitionListener implements RecognitionListener {
                 break;
             case SpeechRecognizer.ERROR_SPEECH_TIMEOUT:
                 bRandom = true;
-                // on error code 6 - ERROR_SPEECH_TIMEOUT we need to resetart usb
-                // restart usb
-                Log.i(TAG, "resetUsb mTimeoutErrorCount: " + mTimeoutErrorCount);
-                mTimeoutErrorCount = mTimeoutErrorCount + 1;
-                if (mTimeoutErrorCount > 1){
-                    Log.i(TAG, "resetUsb! start");
-                    DomWebInterface.publishMessage("reset_usb.sh", "execute_script");
-                    mTimeoutErrorCount = 0;
-                }
+                // on error code 6 - ERROR_SPEECH_TIMEOUT
                 break;
             default:
                 bRandom = true;
