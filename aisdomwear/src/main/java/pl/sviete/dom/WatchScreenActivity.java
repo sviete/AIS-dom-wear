@@ -327,7 +327,7 @@ public class WatchScreenActivity extends WearableActivity implements TextToSpeec
     }
 
     // TTS
-    public void stopSpeechToText(){
+    public void stopTextToSpeech(){
         Log.i(TAG, "Speech started, stoping the tts");
         try {
             mTts.stop();
@@ -361,10 +361,21 @@ public class WatchScreenActivity extends WearableActivity implements TextToSpeec
             }
         }, 4000);
 
-        // STOP current TTS
-        stopSpeechToText();
 
-        String voice = "pl-pl-x-oda-local";
+         // shouldIsayThis Text???
+        String text_to_say = text.trim();
+        if (AisCoreUtils.AIS_DOM_LAST_TTS.substring(0, Math.min(AisCoreUtils.AIS_DOM_LAST_TTS.length(), 250)).equals(text_to_say.substring(0, Math.min(text_to_say.length(), 250)))){
+            AisCoreUtils.AIS_DOM_LAST_TTS = text_to_say;
+                return true;
+            }
+        AisCoreUtils.AIS_DOM_LAST_TTS = text_to_say;
+
+
+
+        // STOP current TTS
+        stopTextToSpeech();
+
+        String voice = "pl-pl-x-oda-network";
         float pitch = 1;
         float rate = 1;
 
