@@ -48,7 +48,7 @@ public class AisCoreUtils {
     private static String AIS_DOM_CLOUD_WS_URL_HTTP = "http://powiedz.co/ords/dom/dom/";
     private static String mCurrentRemoteControllerMode = AisCoreUtils.mOnDisplay;
 
-    public static String AIS_DOM_LAST_TTS;
+    public static String AIS_DOM_LAST_TTS  = "";
 
 
 
