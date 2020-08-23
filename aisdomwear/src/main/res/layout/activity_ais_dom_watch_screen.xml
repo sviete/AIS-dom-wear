@@ -8,7 +8,7 @@
     android:background="@color/black"
     tools:context="pl.sviete.dom.WatchScreenActivity"
     android:focusable="true"
-    android:keepScreenOn="true">
+    android:keepScreenOn="false">
 
     <FrameLayout
         android:layout_width="match_parent"
