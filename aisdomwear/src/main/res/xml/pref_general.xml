@@ -15,16 +15,6 @@
             style="@style/AppPreference.DialogPreference"/>
         />
         <PreferenceScreen
-            android:icon="@drawable/ic_gate_connection_history"
-            android:key="pref_ais_dom_list_history"
-            android:summary="@string/summary_recent_connections"
-            android:title="@string/title_recent_connections">
-                <intent
-                    android:action="android.intent.action.MAIN"
-                    android:targetClass="pl.sviete.dom.connhist.AisConnectionsHistoryActivity"
-                    android:targetPackage="pl.sviete.dom" />
-        </PreferenceScreen>
-        <PreferenceScreen
             android:icon="@drawable/ic_app_info"
             android:key="pref_ais_dom_version"
             android:summary="1.0"

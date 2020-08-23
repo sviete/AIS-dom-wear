@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="pl.sviete.dom">
-
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-feature android:name="android.hardware.type.watch" />
     <application
@@ -16,10 +14,6 @@
             android:name="com.google.android.wearable"
             android:required="true" />
 
-        <!--
-               Set to true if your app is Standalone, that is, it does not require the handheld
-               app to run.
-        -->
         <meta-data
             android:name="com.google.android.wearable.standalone"
             android:value="true" />
@@ -46,37 +40,6 @@
             </intent-filter>
         </activity>
 
-        <activity
-            android:name="pl.sviete.dom.gesture.GestureActivity"
-            android:label="@string/test_gesture_activity_label"
-            android:theme="@style/AppThemeActionBar">
-
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-            </intent-filter>
-        </activity>
-        <activity
-            android:name="pl.sviete.dom.gesture.SaveGestureActivity"
-            android:label="@string/save_gesture"
-            android:theme="@style/AppThemeActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-            </intent-filter>
-        </activity>
-        <activity android:name="pl.sviete.dom.gesture.GestureListActivity"
-            android:label="@string/list_gesture"
-            android:theme="@style/AppThemeActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-            </intent-filter>
-        </activity>
-        <activity android:name="pl.sviete.dom.connhist.AisConnectionsHistoryActivity"
-            android:label="@string/list_connection_history"
-            android:theme="@style/AppThemeActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-            </intent-filter>
-        </activity>
     </application>
 
 </manifest>
