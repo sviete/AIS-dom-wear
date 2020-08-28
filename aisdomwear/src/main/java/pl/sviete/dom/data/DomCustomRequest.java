@@ -21,14 +21,6 @@ public class DomCustomRequest extends Request<JSONObject> {
     private Map<String, String> heders;
     private String body;
 
-    public DomCustomRequest(int method, String url, Map<String, String> heders, String body,
-                            Listener<JSONObject> reponseListener, ErrorListener errorListener) {
-        super(method, url, errorListener);
-        this.listener = reponseListener;
-        this.body = body;
-        this.heders = heders;
-    }
-
     public DomCustomRequest(int method, String url, String body,
                             Listener<JSONObject> reponseListener, ErrorListener errorListener) {
         super(method, url, errorListener);
@@ -72,7 +64,6 @@ public class DomCustomRequest extends Request<JSONObject> {
 
     @Override
     protected void deliverResponse(JSONObject response) {
-        // TODO Auto-generated method stub
         listener.onResponse(response);
     }
 }

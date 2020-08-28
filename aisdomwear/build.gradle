@@ -8,8 +8,8 @@ android {
         applicationId "pl.sviete.dom"
         minSdkVersion 23
         targetSdkVersion 29
-        versionCode 7
-        versionName "1.1.3.N"
+        versionCode 8
+        versionName "1.1.4.N"
     }
     buildTypes {
         release {

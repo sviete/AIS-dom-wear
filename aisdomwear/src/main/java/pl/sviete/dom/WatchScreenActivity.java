@@ -29,7 +29,6 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import java.util.Locale;

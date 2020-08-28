@@ -3,6 +3,8 @@ package pl.sviete.dom;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Looper;
@@ -87,13 +89,24 @@ public class Config {
 
 
     public boolean canUseLocalConnection(String localIP, String gateId) {
-        // no for demo
+        // no if demo gate
         if (gateId.startsWith("dom-demo")){
             return false;
         }
+        // no if no connection
+        ConnectivityManager connectivityManager = (ConnectivityManager) myContext.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
+        if (null == activeNetwork) {
+            return false;
+        }
+        // no if no wifi connection
+        if (activeNetwork.getType() != ConnectivityManager.TYPE_WIFI) {
+            return false;
+        }
+
         // check local IP
         String url = "http://" + localIP + ":8122";
-        String severAnswer = getResponseFromServer(url, 4000);
+        String severAnswer = getResponseFromServer(url, 3000);
         if (!severAnswer.equals("")) {
             try {
                 JSONObject jsonAnswer = new JSONObject(severAnswer);
@@ -165,7 +178,6 @@ public class Config {
             String urlToGo = "";
 
             // Check if the local IP from history is still OK
-
             if (!localIpHist.equals("") && canUseLocalConnection(localIpHist, gateID)){
                     urlToGo = "http://" + localIpHist + ":8180";
                     saveConnToHistory(localIpHist, urlToGo, gateID, userHist, descHist);
