@@ -258,6 +258,8 @@
     <string name="long_click_to_execute_gesture">Przytrzymaj dłużej, aby uruchomić sterowanie gestami.</string>
     <string name="long_click_to_execute_connection">Przytrzymaj dłużej, aby uruchomić sprawdzenie połączenia.</string>
     <string name="stt_view">text</string>
+    <string name="time_text_view">10:18</string>
+    <string name="date_text_view">pt. 28 sierpnia</string>
     <string name="todo">TODO</string>
 
 </resources>

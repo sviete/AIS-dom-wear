@@ -18,6 +18,7 @@ import android.speech.tts.Voice;
 import android.support.wearable.activity.WearableActivity;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.BounceInterpolator;
 import android.view.animation.ScaleAnimation;
@@ -41,6 +42,8 @@ public class WatchScreenActivity extends WearableActivity implements TextToSpeec
     final String TAG = WatchScreenActivity.class.getName();
     private LocalBroadcastManager mlocalBroadcastManager;
     private TextView mSttTextView;
+    private pl.sviete.dom.MyTextClock mTimeTextView;
+    private pl.sviete.dom.MyTextClock mDateTextView;
     private final int REQUEST_RECORD_PERMISSION = 100;
     private Config mConfig = null;
     private ToggleButton mBtnSpeak;
@@ -89,6 +92,8 @@ public class WatchScreenActivity extends WearableActivity implements TextToSpeec
 
         //
         mSttTextView = findViewById(R.id.sttTextView);
+        mTimeTextView = findViewById(R.id.timeTextView);
+        mDateTextView = findViewById(R.id.dataTextView);
 
         ImageView mConfImageView = findViewById(R.id.go_to_config);
         mConfImageView.setOnClickListener(v -> {
@@ -99,8 +104,6 @@ public class WatchScreenActivity extends WearableActivity implements TextToSpeec
         });
 
         mSttTextView.setText("");
-        mSttTextView.setTextColor(ContextCompat.getColor(this, R.color.color3));
-        mSttTextView.setTextSize(30);
         mSttTextView.setGravity(Gravity.CENTER_HORIZONTAL);
 
         // Enables Always-on
@@ -156,6 +159,12 @@ public class WatchScreenActivity extends WearableActivity implements TextToSpeec
 
         // just in case
         createSpeechEngine();
+
+        // hide the date and clock show the stt
+        mSttTextView.setVisibility(View.VISIBLE);
+        mTimeTextView.setVisibility(View.INVISIBLE);
+        mDateTextView.setVisibility(View.INVISIBLE);
+
 
         if (AisCoreUtils.mSpeechIsRecording) {
             stopTheSpeechToText();
@@ -266,8 +275,6 @@ public class WatchScreenActivity extends WearableActivity implements TextToSpeec
     private void onSttFullResult(final String text) {
         Log.e(TAG, "!!! onSttFullResult " + text);
         mSttTextView.setText(text);
-        mSttTextView.setTextColor(ContextCompat.getColor(this, R.color.color3));
-        mSttTextView.setTextSize(34);
         mSttTextView.setGravity(Gravity.CENTER_HORIZONTAL);
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -277,6 +284,8 @@ public class WatchScreenActivity extends WearableActivity implements TextToSpeec
                 String currText = mSttTextView.getText().toString();
                 if (currText.equals(text)) {
                     mSttTextView.setText("");
+                    mTimeTextView.setVisibility(View.VISIBLE);
+                    mDateTextView.setVisibility(View.VISIBLE);
                 }
             }
         }, 2500);
@@ -285,8 +294,6 @@ public class WatchScreenActivity extends WearableActivity implements TextToSpeec
     private void onSttParialResults(String text) {
         Log.d(TAG, "onSttParialResults " + text);
         mSttTextView.setText(text);
-        mSttTextView.setTextColor(ContextCompat.getColor(this, R.color.color1));
-        mSttTextView.setTextSize(32);
         mSttTextView.setGravity(Gravity.CENTER_HORIZONTAL);
     }
 
@@ -347,7 +354,6 @@ public class WatchScreenActivity extends WearableActivity implements TextToSpeec
         // display text
         final String text_to_disp = text;
         mSttTextView.setText(text);
-        mSttTextView.setTextSize(22);
         mSttTextView.setGravity(Gravity.CENTER_HORIZONTAL);
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {

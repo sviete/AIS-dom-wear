@@ -15,37 +15,66 @@
         android:layout_height="match_parent"
         android:padding="5dp">
 
-    <ImageView
-        android:id="@+id/go_to_config"
-        android:layout_width="34dp"
-        android:layout_height="34dp"
-        android:layout_gravity="top|center"
-        android:src="@drawable/ic_menu_more"
-        android:contentDescription="@string/todo"
-        />
+        <ImageView
+            android:id="@+id/go_to_config"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            android:layout_gravity="top|center"
+            android:contentDescription="@string/todo"
+            android:src="@drawable/ic_ais_logo_small_21_29" />
+
+        <pl.sviete.dom.MyTextClock
+            android:id="@+id/timeTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|center"
+            android:layout_marginBottom="25dp"
+            android:format24Hour="HH:mm"
+            android:gravity="end"
+            android:text="@string/time_text_view"
+            android:textColor="@android:color/white"
+            android:textSize="60sp"
+            android:visibility="visible" />
+
+        <pl.sviete.dom.MyTextClock
+            android:id="@+id/dataTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|center"
+            android:format24Hour="EE, dd MMMM"
+            android:text="@string/date_text_view"
+            android:textColor="@android:color/white"
+            android:textSize="14sp"
+            android:layout_marginTop="15dp"
+            android:visibility="visible" />
+
         <TextView
             android:id="@+id/sttTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center|center"
             android:text="@string/stt_view"
-            tools:text="@string/application_name" />
+            tools:text="@string/date_text_view"
+            android:textColor="@android:color/white"
+            android:textSize="20sp"
+            android:visibility="invisible"/>
+
         <ToggleButton
             android:id="@+id/btnSpeak"
             style="@style/toggleButton"
             android:layout_width="80dp"
             android:layout_height="80dp"
+            android:layout_gravity="bottom|center"
+            android:layout_marginBottom="-6dp"
             android:background="@drawable/ic_floating_mic_button_toggle_bg"
+            android:fitsSystemWindows="true"
             android:focusable="true"
             android:nextFocusLeft="@+id/btnGoToSettings"
             android:nextFocusRight="@+id/ais_recognition_view"
             android:nextFocusUp="@+id/ais_recognition_view"
             android:nextFocusDown="@+id/btnGoToSettings"
             android:textOff=""
-            android:textOn=""
-            android:layout_gravity="bottom|center"
-            android:layout_marginBottom="10dp"
-            android:fitsSystemWindows="true"/>
+            android:textOn="" />
 
     </FrameLayout>
 </androidx.wear.widget.BoxInsetLayout>
