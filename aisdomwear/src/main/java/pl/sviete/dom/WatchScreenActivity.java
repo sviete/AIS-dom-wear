@@ -104,6 +104,9 @@ public class WatchScreenActivity extends WearableActivity implements TextToSpeec
         });
 
         mSttTextView.setText("");
+        mSttTextView.setVisibility(View.INVISIBLE);
+        mTimeTextView.setVisibility(View.VISIBLE);
+        mDateTextView.setVisibility(View.VISIBLE);
         mSttTextView.setGravity(Gravity.CENTER_HORIZONTAL);
 
         // Enables Always-on
@@ -171,7 +174,7 @@ public class WatchScreenActivity extends WearableActivity implements TextToSpeec
             Log.e(TAG, "StopTheSpeechToText !!!");
         }
 
-        Log.e(TAG, "startListening");
+        Log.d(TAG, "startListening");
         AisCoreUtils.mSpeech.startListening(AisCoreUtils.mRecognizerIntent);
 
         ScaleAnimation scaleAnimation = new ScaleAnimation(0.7f, 1.0f, 0.7f, 1.0f,
@@ -266,14 +269,14 @@ public class WatchScreenActivity extends WearableActivity implements TextToSpeec
         Log.d(TAG, "onEndSpeechToText -> stop");
 
         if (mSttTextView.getText().equals(getString(R.string.app_i_am_listening_info))){
-            mSttTextView.setText("...");
+            mSttTextView.setText("");
         }
 
         mBtnSpeak.setChecked(false);
     }
 
     private void onSttFullResult(final String text) {
-        Log.e(TAG, "!!! onSttFullResult " + text);
+        Log.d(TAG, "!!! onSttFullResult " + text);
         mSttTextView.setText(text);
         mSttTextView.setGravity(Gravity.CENTER_HORIZONTAL);
         final Handler handler = new Handler();
@@ -363,6 +366,8 @@ public class WatchScreenActivity extends WearableActivity implements TextToSpeec
                 String currText = mSttTextView.getText().toString();
                 if (currText.equals(text_to_disp)) {
                     mSttTextView.setText("");
+                    mTimeTextView.setVisibility(View.VISIBLE);
+                    mDateTextView.setVisibility(View.VISIBLE);
                 }
             }
         }, 4000);

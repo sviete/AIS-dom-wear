@@ -2,6 +2,8 @@ package pl.sviete.dom;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.util.Log;
 
@@ -10,10 +12,11 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.koushikdutta.async.http.AsyncHttpClient;
-import com.koushikdutta.async.http.AsyncHttpPost;
-import com.koushikdutta.async.http.AsyncHttpResponse;
-import com.koushikdutta.async.http.body.JSONObjectBody;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+
+import pl.sviete.dom.data.DomCustomRequest;
 
 import static pl.sviete.dom.AisCoreUtils.BROADCAST_ACTIVITY_SAY_IT;
 import static pl.sviete.dom.AisCoreUtils.BROADCAST_SAY_IT_TEXT;
@@ -21,48 +24,57 @@ import static pl.sviete.dom.AisCoreUtils.BROADCAST_SAY_IT_TEXT;
 public class DomWebInterface {
     final static String TAG = DomWebInterface.class.getName();
 
+    public static String getDomWsUrl(Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        final String url = sharedPreferences.getString(context.getString(R.string.key_setting_app_launchurl), "");
+        if (url.startsWith("dom-")){
+            return "http://" + url + ".paczka.pro";
+        }
+        return pl.sviete.dom.AisCoreUtils.getAisDomUrl().replaceAll("/$", "");
+    }
+
     private static void doPost(JSONObject message, Context context){
         // do the simple HTTP post
-        String url =  pl.sviete.dom.AisCoreUtils.getAisDomUrl() + "/api/webhook/aisdomprocesscommandfromframe";
-        AsyncHttpPost post = new AsyncHttpPost(url);
-        JSONObjectBody body = new JSONObjectBody(message);
-        post.addHeader("Content-Type", "application/json");
-        post.setBody(body);
-        AsyncHttpClient.getDefaultInstance().executeJSONObject(post, new AsyncHttpClient.JSONObjectCallback() {
+        try {
+            message.put("ais_ha_webhook_id", AisCoreUtils.AIS_HA_WEBHOOK_ID);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
-            void say(String text){
-                Intent intent = null;
-                intent = new Intent(BROADCAST_ACTIVITY_SAY_IT);
-                intent.putExtra(BROADCAST_SAY_IT_TEXT, text);
-                LocalBroadcastManager bm = LocalBroadcastManager.getInstance(context);
-                bm.sendBroadcast(intent);
-            }
-
-            // Callback is invoked with any exceptions/errors, and the result, if available.
+        String webHookUrl = getDomWsUrl(context) + "/api/webhook/aisdomprocesscommandfromframe";
+        DomCustomRequest jsObjRequest = new DomCustomRequest(Request.Method.POST, webHookUrl, message.toString(), new Response.Listener<JSONObject>() {
             @Override
-            public void onCompleted(Exception e, AsyncHttpResponse response, JSONObject result) {
-                if (e != null) {
-                    // try to discover gate or inform about connection problem
-                    Config config = new Config(context.getApplicationContext());
-                    String appLaunchUrl = config.getAppLaunchUrl(false);
-                    if (appLaunchUrl.startsWith("dom-")) {
-                        // sprawdzam połączenie
-                        //say("Sprawdzam połączenie.");
-                        appLaunchUrl = config.getAppLaunchUrl(true);
-                    }
-                    return;
-                }
+            public void onResponse(JSONObject response) {
                 // say the response
-                if (result.has("say_it")){
+                if (response.has("say_it")) {
                     try {
-                        String text = result.getString("say_it").trim();
-                        say(text);
+                        String text = response.getString("say_it").trim();
+                        Intent intent = null;
+                        intent = new Intent(BROADCAST_ACTIVITY_SAY_IT);
+                        intent.putExtra(BROADCAST_SAY_IT_TEXT, text);
+                        LocalBroadcastManager bm = LocalBroadcastManager.getInstance(context);
+                        bm.sendBroadcast(intent);
                     } catch (JSONException ex) {
                         ex.printStackTrace();
                     }
                 }
             }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError response) {
+                Log.e("AIS auth: ", response.toString());
+                // try to discover gate or inform about connection problem
+                Config config = new Config(context.getApplicationContext());
+                String appLaunchUrl = config.getAppLaunchUrl(false);
+                if (appLaunchUrl.startsWith("dom-")) {
+                    appLaunchUrl = config.getAppLaunchUrl(true);
+                }
+                return;
+
+            }
         });
+
+        AisCoreUtils.getRequestQueue(context.getApplicationContext()).add(jsObjRequest);
     }
 
     public static void publishMessage(String message, String topicPostfix, Context context){

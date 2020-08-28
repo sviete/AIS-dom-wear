@@ -87,6 +87,10 @@ public class Config {
 
 
     public boolean canUseLocalConnection(String localIP, String gateId) {
+        // no for demo
+        if (gateId.startsWith("dom-demo")){
+            return false;
+        }
         // check local IP
         String url = "http://" + localIP + ":8122";
         String severAnswer = getResponseFromServer(url, 4000);
