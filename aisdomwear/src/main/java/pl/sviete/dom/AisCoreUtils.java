@@ -13,7 +13,6 @@ public class AisCoreUtils {
     public static String AIS_GATE_ID = null;
     public static String AIS_GATE_USER = "";
     public static String AIS_GATE_DESC = "";
-    public static String AIS_HA_WEBHOOK_ID = "";
 
     // STT
     public static final String BROADCAST_ON_END_SPEECH_TO_TEXT = "BROADCAST_ON_END_SPEECH_TO_TEXT";
@@ -34,8 +33,16 @@ public class AisCoreUtils {
     private static String AIS_DOM_CLOUD_WS_URL = "https://powiedz.co/ords/dom/dom/";
     private static String AIS_DOM_CLOUD_WS_URL_HTTP = "http://powiedz.co/ords/dom/dom/";
 
+    // HA
+    public static String HA_CLIENT_ID = "";
+    public static String HA_CODE = "";
+    public static String AIS_PUSH_NOTIFICATION_KEY = "";
+    public static String AIS_HA_ACCESS_TOKEN = "";
+    public static String AIS_HA_WEBHOOK_ID = "";
+
     // REQUEST
     private static RequestQueue mRequestQueue;
+
 
 
     public static String getAisDomUrl(){

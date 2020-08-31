@@ -262,5 +262,6 @@
     <string name="date_text_view">pt. 28 sierpnia</string>
     <string name="todo">TODO</string>
 
+    <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
 
 </resources>

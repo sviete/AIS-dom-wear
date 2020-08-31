@@ -25,7 +25,7 @@ public class SettingsActivity extends AppCompatActivity {
             // pin was provided
             if (stringValue.length() == 6) {
                 Log.i(TAG, stringValue);
-                // get gate if for pin
+                // get gate id for pin
                 Config.checkGateIdForPinJob checkConnectionUrlJob = new Config.checkGateIdForPinJob();
                 checkConnectionUrlJob.execute(stringValue);
             }

@@ -226,6 +226,9 @@ public class Config {
 
             if (gateId.startsWith("dom-")) {
                 mConfig.setAppLaunchUrl(gateId);
+                // register device
+
+                //
                 Intent i = new Intent(myContext, WatchScreenActivity.class);
                 i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 myContext.startActivity(i);
@@ -242,7 +245,7 @@ public class Config {
         @Override
         protected void onPostExecute(String message) {
             //process message with url to go
-            Log.i(TAG, "checkGateIdForPinJob onPostExecute");
+            Log.i(TAG, "checkGateIdForPinJob onPostExecute " + message);
         }
     }
 

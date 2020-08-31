@@ -114,4 +114,36 @@ public class DomWebInterface {
         doPost(json, context);
     }
 
+    public static void doWearOsDeviceRegistration(Context context, String pin){
+        try {
+            // 1. get webhook - create message body
+            JSONObject webHookJson = new JSONObject();
+            webHookJson.put("device_id", AisCoreUtils.AIS_GATE_ID);
+            webHookJson.put("app_id", BuildConfig.APPLICATION_ID);
+            webHookJson.put("app_name", "AIS dom");
+            webHookJson.put("app_version", BuildConfig.VERSION_NAME);
+            webHookJson.put("device_name", "mobile_ais_" + AisCoreUtils.AIS_GATE_ID.toLowerCase().replace(" ", "_"));
+            webHookJson.put("manufacturer", AisNetUtils.getManufacturer());
+            webHookJson.put("model", AisNetUtils.getModel() + " " + AisNetUtils.getDevice() );
+            webHookJson.put("os_name", "Android");
+            webHookJson.put("os_version", AisNetUtils.getApiLevel() + " " + AisNetUtils.getOsVersion());
+            webHookJson.put("supports_encryption", false);
+            JSONObject appData = new JSONObject();
+            appData.put("push_token", AisCoreUtils.AIS_PUSH_NOTIFICATION_KEY);
+            appData.put("push_url", "https://powiedz.co/ords/dom/dom/send_push_data");
+            webHookJson.put("app_data", appData);
+            // pin or token
+            webHookJson.put("ais_dom_pin", pin);
+            
+            // 2. call
+            publishJson(webHookJson,"ais/register_wear_os", context);
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+        }
+    }
+
+    public static void updateRegistrationPushToken(Context context) {
+        doWearOsDeviceRegistration(context, "");
+    }
 }
