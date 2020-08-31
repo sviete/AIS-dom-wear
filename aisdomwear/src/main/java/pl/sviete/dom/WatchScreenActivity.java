@@ -28,8 +28,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 import java.util.Locale;
 
@@ -118,6 +124,25 @@ public class WatchScreenActivity extends WearableActivity implements TextToSpeec
         Log.i(TAG, "set gate ID");
         AisCoreUtils.AIS_GATE_ID = "dom-" + Settings.Secure.getString(this.getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
         Log.i(TAG, "AIS_GATE_ID: " + AisCoreUtils.AIS_GATE_ID);
+
+        // [START retrieve_current_token for cloud messaging]
+        FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+            @Override
+            public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                if (!task.isSuccessful()) {
+                    Log.w(TAG, "getInstanceId failed", task.getException());
+                    return;
+                }
+
+                // Get new Instance ID token
+                String token = task.getResult().getToken();
+
+                // Log and save
+                Log.d(TAG, "FCM Token: " + token);
+                AisCoreUtils.AIS_PUSH_NOTIFICATION_KEY = token;
+            }
+        });
+        // [END retrieve_current_token]
     }
 
     @Override
@@ -209,6 +234,7 @@ public class WatchScreenActivity extends WearableActivity implements TextToSpeec
         filter.addAction(AisCoreUtils.BROADCAST_EVENT_ON_SPEECH_PARTIAL_RESULTS);
         filter.addAction(AisCoreUtils.BROADCAST_EVENT_ON_SPEECH_COMMAND);
         filter.addAction(AisCoreUtils.BROADCAST_ACTIVITY_SAY_IT);
+        filter.addAction(AisCoreUtils.BROADCAST_ON_AIS_REQUEST);
         mlocalBroadcastManager.registerReceiver(mBroadcastReceiver, filter);
 
         //
@@ -253,6 +279,14 @@ public class WatchScreenActivity extends WearableActivity implements TextToSpeec
                 Log.d(TAG, AisCoreUtils.BROADCAST_ACTIVITY_SAY_IT + " going to processTTS");
                 final String txtMessage = intent.getStringExtra(AisCoreUtils.BROADCAST_SAY_IT_TEXT);
                 processTTS(txtMessage);
+            } else if (intent.getAction().equals(AisCoreUtils.BROADCAST_ON_AIS_REQUEST)) {
+                Log.d(TAG, AisCoreUtils.BROADCAST_ON_AIS_REQUEST);
+                if (intent.hasExtra("aisRequest")){
+                    String aisRequest = intent.getStringExtra("aisRequest");
+                    if (aisRequest.equals("micOn")) {
+                        startTheSpeechToText();
+                    }
+                }
             }
         }
     };

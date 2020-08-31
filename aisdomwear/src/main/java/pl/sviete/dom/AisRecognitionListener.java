@@ -7,6 +7,7 @@ package pl.sviete.dom;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.speech.RecognitionListener;
 import android.speech.SpeechRecognizer;
 import android.util.Log;
@@ -45,6 +46,9 @@ public class AisRecognitionListener implements RecognitionListener {
             "Powtórz proszę jeszcze raz.",
             "Czy możesz powtórzyć?");
 
+    // temporary workaround for https://issuetracker.google.com/issues/152628934
+    boolean singleResult=true;
+
     @Override
     public void onReadyForSpeech(Bundle params) {
 
@@ -75,7 +79,6 @@ public class AisRecognitionListener implements RecognitionListener {
         Intent intent = new Intent(AisCoreUtils.BROADCAST_ON_END_SPEECH_TO_TEXT);
         LocalBroadcastManager bm = LocalBroadcastManager.getInstance(context);
         bm.sendBroadcast(intent);
-
         //
         AisCoreUtils.mSpeechIsRecording = false;
     }
@@ -96,15 +99,26 @@ public class AisRecognitionListener implements RecognitionListener {
     @Override
     public void onResults(Bundle results) {
         Log.d(TAG, "AisRecognitionListener onResults");
-        ArrayList<String> matches = results
-                .getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
-        Intent intent = new Intent(AisCoreUtils.BROADCAST_EVENT_ON_SPEECH_COMMAND);
-        intent.putExtra(AisCoreUtils.BROADCAST_EVENT_ON_SPEECH_COMMAND_TEXT, matches.get(0));
-        LocalBroadcastManager bm = LocalBroadcastManager.getInstance(context);
-        bm.sendBroadcast(intent);
+        if (singleResult) {
+            ArrayList<String> matches = results
+                    .getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
+            Intent intent = new Intent(AisCoreUtils.BROADCAST_EVENT_ON_SPEECH_COMMAND);
+            intent.putExtra(AisCoreUtils.BROADCAST_EVENT_ON_SPEECH_COMMAND_TEXT, matches.get(0));
+            LocalBroadcastManager bm = LocalBroadcastManager.getInstance(context);
+            bm.sendBroadcast(intent);
 
-        // publish via interface to gate
-        DomWebInterface.publishMessage( matches.get(0), "speech_command", context);
+            // publish via interface to gate
+            DomWebInterface.publishMessage(matches.get(0), "speech_command", context);
+            singleResult = false;
+        }
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                singleResult=true;
+
+            }
+        },500);
 
         // reset the timeout error count
         mTimeoutErrorCount = 0;

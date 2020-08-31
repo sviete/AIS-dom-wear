@@ -64,7 +64,7 @@
 
     <string name="key_setting_app_launchurl">setting_app_launchurl</string>
     <string name="default_setting_app_launchurl"></string>
-    <string name="title_setting_app_launchurl">Gate ID, URL or PIN*</string>
+    <string name="title_setting_app_launchurl">Pairing PIN*</string>
     <string name="title_setting_app_launchurl_summary">*PIN from AIS dom gate</string>
 
 
@@ -263,5 +263,8 @@
     <string name="todo">TODO</string>
 
     <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
+
+    <string name="key_setting_ais_ha_webhook_id">ais_ha_webhook_id</string>
+    <string name="default_setting_ais_ha_webhook_id">""</string>
 
 </resources>

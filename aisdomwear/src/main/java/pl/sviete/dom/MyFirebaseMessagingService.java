@@ -11,6 +11,7 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import androidx.core.app.NotificationCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import android.os.Handler;
 import android.speech.tts.TextToSpeech;
@@ -139,6 +140,14 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService impleme
         }
     }
 
+    private void brodcastToPanelService(String request, String extraUrl){
+        Intent requestIntent = new Intent(AisCoreUtils.BROADCAST_ON_AIS_REQUEST);
+        requestIntent.putExtra("aisRequest", request);
+        requestIntent.putExtra("url", extraUrl);
+        LocalBroadcastManager bm = LocalBroadcastManager.getInstance(getApplicationContext());
+        bm.sendBroadcast(requestIntent);
+    }
+
     /**
      * Turn on microphone etc
      *
@@ -154,6 +163,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService impleme
                     processTTS(text);
                 }
             }
+        } else if (request.equals("micOn")) {
+            brodcastToPanelService("micOn", null);
         }
     }
 

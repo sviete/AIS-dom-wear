@@ -133,8 +133,16 @@ public class Config {
             try {
                 JSONObject jsonAnswer = new JSONObject(severAnswer);
                 String localGateIP = jsonAnswer.getString("ip");
-                AisCoreUtils.AIS_GATE_USER = jsonAnswer.getString("user");
-                AisCoreUtils.AIS_GATE_DESC = jsonAnswer.getString("desc");
+                if (jsonAnswer.has("user")) {
+                    AisCoreUtils.AIS_GATE_USER = jsonAnswer.getString("user");
+                } else {
+                    AisCoreUtils.AIS_GATE_USER = "no user";
+                }
+                if (jsonAnswer.has("desc")) {
+                    AisCoreUtils.AIS_GATE_DESC = jsonAnswer.getString("desc");
+                } else {
+                    AisCoreUtils.AIS_GATE_DESC = "no desc";
+                }
                 if (!gateId.equals("ais-dom")) {
                     return localGateIP;
                 }
@@ -146,7 +154,7 @@ public class Config {
         return "";
     }
 
-    public static String getGateIdFromCloud(String pin) {
+    public static String[] getGateIdFromCloud(String pin) {
         // ask cloud for gate id for pin
         // https://powiedz.co/ords/dom/dom/gate_id_from_pin?pin=1234
         Log.i(TAG, "getGateIdFromCloud");
@@ -156,13 +164,14 @@ public class Config {
             try {
                 JSONObject jsonAnswer = new JSONObject(severAnswer);
                 String gateID = jsonAnswer.getString("id");
-                return gateID;
+                String userID = jsonAnswer.getString("user_id");
+                return new String[] {gateID, userID};
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
 
-        return myContext.getString(R.string.app_get_gate_for_pin_error);
+        return new String[] {myContext.getString(R.string.app_get_gate_for_pin_error), ""};
     }
 
 
@@ -222,12 +231,13 @@ public class Config {
         protected String doInBackground(String[] params) {
             Log.i(TAG, "doInBackground");
             String pin = params[0];
-            String gateId = getGateIdFromCloud(pin);
-
+            String [] cloudAnswer = getGateIdFromCloud(pin);
+            String gateId = cloudAnswer[0];
             if (gateId.startsWith("dom-")) {
                 mConfig.setAppLaunchUrl(gateId);
+                String userId = cloudAnswer[1];
                 // register device
-
+                DomWebInterface.doWearOsDeviceRegistration(myContext, pin, userId);
                 //
                 Intent i = new Intent(myContext, WatchScreenActivity.class);
                 i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -289,6 +299,16 @@ public class Config {
         // this is executed from PIN parring or Gate history only
         SharedPreferences.Editor ed = sharedPreferences.edit();
         ed.putString("setting_app_launchurl", gate);
+        ed.apply();
+    }
+
+    public String getAisHaWebhookId(){
+        return getStringPref(R.string.key_setting_ais_ha_webhook_id, R.string.default_setting_ais_ha_webhook_id);
+    }
+
+    public void setAisHaWebhookId(String webhookId){
+        SharedPreferences.Editor ed = sharedPreferences.edit();
+        ed.putString("ais_ha_webhook_id", webhookId);
         ed.apply();
     }
 

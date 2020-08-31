@@ -11,6 +11,7 @@
             android:textAlignment="center"
             android:summary="@string/title_setting_app_launchurl_summary"
             android:title="@string/title_setting_app_launchurl"
+            android:inputType="text|textNoSuggestions"
             app:dialogTitle=" "
             style="@style/AppPreference.DialogPreference"/>
         />
