@@ -16,6 +16,12 @@
             style="@style/AppPreference.DialogPreference"/>
         />
         <PreferenceScreen
+            android:icon="@drawable/ic_app_logs"
+            android:key="pref_ais_dom_email_logs"
+            android:summary="info@sviete.pl"
+            android:title="'@'-> logs">
+        </PreferenceScreen>
+        <PreferenceScreen
             android:icon="@drawable/ic_app_info"
             android:key="pref_ais_dom_version"
             android:summary="1.0"

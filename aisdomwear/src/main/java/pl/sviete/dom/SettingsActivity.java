@@ -1,13 +1,19 @@
 package pl.sviete.dom;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.Preference;
+
+import android.os.Environment;
 import android.util.Log;
 import androidx.preference.PreferenceManager;
 import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.PreferenceScreen;
 
+import java.io.File;
+import java.io.IOException;
 
 
 public class SettingsActivity extends AppCompatActivity {
@@ -80,6 +86,38 @@ public class SettingsActivity extends AppCompatActivity {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
+
+            PreferenceScreen prefEmailLogs = (PreferenceScreen) findPreference("pref_ais_dom_email_logs");
+            prefEmailLogs.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                public boolean onPreferenceClick(Preference preference) {
+                    // email
+                        // save logcat in file
+                        File outputFile = new File(Environment.getExternalStorageDirectory(),
+                                "logcat.txt");
+                        try {
+                            Runtime.getRuntime().exec(
+                                    "logcat -f " + outputFile.getAbsolutePath());
+                        } catch (IOException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
+
+                        //send file using email
+                        Intent emailIntent = new Intent(Intent.ACTION_SEND);
+                        // Set type to "email"
+                        emailIntent.setType("vnd.android.cursor.dir/email");
+                        String to[] = {"info@gsviete.pl"};
+                        emailIntent .putExtra(Intent.EXTRA_EMAIL, to);
+                        // the attachment
+                        emailIntent .putExtra(Intent.EXTRA_STREAM, outputFile.getAbsolutePath());
+                        // the mail subject
+                        emailIntent .putExtra(Intent.EXTRA_SUBJECT, "Wear Os Logs");
+                        startActivity(Intent.createChooser(emailIntent , "Logs..."));
+
+                    return false;
+                    }
+
+            });
 
         }
 
