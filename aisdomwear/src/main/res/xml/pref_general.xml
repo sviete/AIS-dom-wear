@@ -19,7 +19,7 @@
             android:icon="@drawable/ic_app_logs"
             android:key="pref_ais_dom_email_logs"
             android:summary="info@sviete.pl"
-            android:title="'@'-> logs">
+            android:title="@string/send_app_logs_title">
         </PreferenceScreen>
         <PreferenceScreen
             android:icon="@drawable/ic_app_info"

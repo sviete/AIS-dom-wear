@@ -1,15 +1,19 @@
 package pl.sviete.dom;
 
+import android.Manifest;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
+
+import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
@@ -24,6 +28,8 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Map;
+
+import static pl.sviete.dom.AisCoreUtils.MESSAGE_CKICK_ACTION;
 
 
 /**
@@ -165,7 +171,20 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService impleme
             }
         } else if (request.equals("micOn")) {
             brodcastToPanelService("micOn", null);
-        }
+        } else if (request.equals("locationUpdate")) {
+             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                 sendNotification(getString(R.string.notification_access_to_location_title), getString(R.string.notification_access_to_location_body),null, "100", "loc_request");
+                 return;
+             }
+             Intent reportLocationServiceIntent = new Intent(this.getApplicationContext(), AisFuseLocationService.class);
+             this.getApplicationContext().startService(reportLocationServiceIntent);
+             mHandler.postDelayed(new Runnable() {
+                 @Override
+                 public void run() {
+                     mContext.stopService(reportLocationServiceIntent);
+                 }
+             }, 100000);
+         }
     }
 
 
@@ -177,6 +196,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService impleme
         // Go to frame
         Intent goToAppView = new Intent(getApplicationContext(), WatchScreenActivity.class);
         int iUniqueId = (int) (System.currentTimeMillis() & 0xfffffff);
+        if (clickAction != null && clickAction != "") {
+            goToAppView.putExtra(MESSAGE_CKICK_ACTION, clickAction);
+        }
+
         goToAppView.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), iUniqueId, goToAppView, PendingIntent.FLAG_UPDATE_CURRENT);
 

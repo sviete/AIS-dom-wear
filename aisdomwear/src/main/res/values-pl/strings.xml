@@ -267,4 +267,11 @@
     <string name="key_setting_ais_ha_webhook_id">ais_ha_webhook_id</string>
     <string name="default_setting_ais_ha_webhook_id">""</string>
 
+    <string name="send_app_logs_title">Wyślij logi aplikacji</string>
+    <string name="are_you_sure_logs_confirmation">Czy jesteś pewien, że chcesz wysłać logi do AI-Speaker?</string>
+    <string name="are_you_sure_yes">TAK, BO WIEM CO ROBIE!</string>
+    <string name="are_you_sure_no">NIE, LEPIEJ NIE...</string>
+    <string name="notification_access_to_location_title">Bramka AIS dom chce uzyskać dostęp do Twojej lokalizacji.</string>
+    <string name="notification_access_to_location_body">Przejdz do aplikacji aby dodać.</string>
+
 </resources>

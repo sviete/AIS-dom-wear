@@ -2,6 +2,7 @@ package pl.sviete.dom;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.Preference;
@@ -12,8 +13,13 @@ import androidx.preference.PreferenceManager;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceScreen;
 
+import com.google.android.wearable.intent.RemoteIntent;
+
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+
+import static pl.sviete.dom.DomWebInterface.doSendLogToAis;
 
 
 public class SettingsActivity extends AppCompatActivity {
@@ -90,33 +96,17 @@ public class SettingsActivity extends AppCompatActivity {
             PreferenceScreen prefEmailLogs = (PreferenceScreen) findPreference("pref_ais_dom_email_logs");
             prefEmailLogs.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 public boolean onPreferenceClick(Preference preference) {
-                    // email
-                        // save logcat in file
-                        File outputFile = new File(Environment.getExternalStorageDirectory(),
-                                "logcat.txt");
-                        try {
-                            Runtime.getRuntime().exec(
-                                    "logcat -f " + outputFile.getAbsolutePath());
-                        } catch (IOException e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
-                        }
+                    try {
+                        doSendLogToAis(getContext());
+                        // Intent remoteIntent = new Intent(Intent.ACTION_VIEW).addCategory(Intent.CATEGORY_BROWSABLE).setData(Uri.parse("market://details?id=pl.sviete.dom"));
+                        //RemoteIntent.startRemoteActivity(getContext(),remoteIntent,null);
 
-                        //send file using email
-                        Intent emailIntent = new Intent(Intent.ACTION_SEND);
-                        // Set type to "email"
-                        emailIntent.setType("vnd.android.cursor.dir/email");
-                        String to[] = {"info@gsviete.pl"};
-                        emailIntent .putExtra(Intent.EXTRA_EMAIL, to);
-                        // the attachment
-                        emailIntent .putExtra(Intent.EXTRA_STREAM, outputFile.getAbsolutePath());
-                        // the mail subject
-                        emailIntent .putExtra(Intent.EXTRA_SUBJECT, "Wear Os Logs");
-                        startActivity(Intent.createChooser(emailIntent , "Logs..."));
-
+                    } catch (Exception e) {
+                        // TODO Auto-generated catch block
+                        Log.e(TAG, e.getMessage());
+                    }
                     return false;
                     }
-
             });
 
         }

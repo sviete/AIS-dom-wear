@@ -39,6 +39,8 @@ import com.google.firebase.iid.InstanceIdResult;
 
 import java.util.Locale;
 
+import static pl.sviete.dom.AisCoreUtils.MESSAGE_CKICK_ACTION;
+import static pl.sviete.dom.AisCoreUtils.REQUEST_LOCATION_PERMISSION;
 
 
 public class WatchScreenActivity extends WearableActivity implements TextToSpeech.OnInitListener{
@@ -179,7 +181,6 @@ public class WatchScreenActivity extends WearableActivity implements TextToSpeec
         } else {
             Log.e(TAG, "Could not initialize TextToSpeech.");
         }
-
     }
 
     private void startTheSpeechToText(){
@@ -355,6 +356,24 @@ public class WatchScreenActivity extends WearableActivity implements TextToSpeec
         }
     }
 
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        Log.i(TAG, "onNewIntent");
+        super.onNewIntent(intent);
+        try {
+            if (intent.hasExtra(MESSAGE_CKICK_ACTION)) {
+                String action = intent.getStringExtra(MESSAGE_CKICK_ACTION);
+                if (action.equals("loc_request")){
+                    ActivityCompat.requestPermissions(WatchScreenActivity.this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    REQUEST_LOCATION_PERMISSION);
+                }
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "request location access onNewIntent error: " + e.toString());
+        }
+    }
 
     @Override
     public void onDestroy() {

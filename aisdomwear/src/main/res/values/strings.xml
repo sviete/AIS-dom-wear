@@ -267,4 +267,11 @@
     <string name="key_setting_ais_ha_webhook_id">ais_ha_webhook_id</string>
     <string name="default_setting_ais_ha_webhook_id">""</string>
 
+    <string name="send_app_logs_title">Send application logs</string>
+    <string name="are_you_sure_logs_confirmation">Are you sure you want to send logs to AI-Speaker?</string>
+    <string name="are_you_sure_yes">YES</string>
+    <string name="are_you_sure_no">NO</string>
+    <string name="notification_access_to_location_title">The AIS gateway wants to access your location.</string>
+    <string name="notification_access_to_location_body">Go to the application to add.</string>
+
 </resources>
