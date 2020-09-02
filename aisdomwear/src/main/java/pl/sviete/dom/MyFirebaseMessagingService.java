@@ -161,6 +161,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService impleme
     private void sendRequest(String request, Map<String, String> data) {
         Config config = new Config(getApplicationContext());
 
+        // return if request from gate are not allowed
+        if (!config.getAisAllowDomRequests()){
+            return;
+        }
+
          if (request.equals("sayIt")) {
             // try to say
             if (data.size() > 0) {
@@ -173,7 +178,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService impleme
             brodcastToPanelService("micOn", null);
         } else if (request.equals("locationUpdate")) {
              if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                 sendNotification(getString(R.string.notification_access_to_location_title), getString(R.string.notification_access_to_location_body),null, "100", "loc_request");
                  return;
              }
              Intent reportLocationServiceIntent = new Intent(this.getApplicationContext(), AisFuseLocationService.class);

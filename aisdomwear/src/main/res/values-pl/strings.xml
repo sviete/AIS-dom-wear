@@ -45,7 +45,6 @@
 
     <string name="share_file_chooser_title">Udostępnij dla</string>
     <string name="grant_permission">Udziel zgody</string>
-    <string name="permission_description">AIS dom:API potrzebuje następujących uprawnień:\n</string>
 
     <string name="title_activity_settings">USTAWIENIA APLIKACJA</string>
     <string name="title_activity_other_apps">INTEGRACJE</string>
@@ -269,9 +268,14 @@
 
     <string name="send_app_logs_title">Wyślij logi aplikacji</string>
     <string name="are_you_sure_logs_confirmation">Czy jesteś pewien, że chcesz wysłać logi do AI-Speaker?</string>
-    <string name="are_you_sure_yes">TAK, BO WIEM CO ROBIE!</string>
-    <string name="are_you_sure_no">NIE, LEPIEJ NIE...</string>
-    <string name="notification_access_to_location_title">Bramka AIS dom chce uzyskać dostęp do Twojej lokalizacji.</string>
-    <string name="notification_access_to_location_body">Przejdz do aplikacji aby dodać.</string>
+    <string name="are_you_sure_yes">TAK, WYŚLIJ!</string>
+    <string name="are_you_sure_no">NIE, DZIĘKI...</string>
+
+    <string name="key_setting_app_remote_requests">setting_app_remote_requests</string>
+    <string name="default_setting_app_remote_requests">false</string>
+    <string name="title_setting_app_remote_requests">AIS dom</string>
+    <string name="summary_setting_app_remote_requests">Zezwalaj na zapytania z bramki</string>
+
+    <string name="permission_description">AIS dom API potrzebuje uprawnień do GPS</string>
 
 </resources>

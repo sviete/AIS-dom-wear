@@ -41,6 +41,12 @@ public class Config {
         return pref.length() == 0 ? def : pref;
     }
 
+    private boolean getBoolPref(int resId, int defId) {
+        return sharedPreferences.getBoolean(
+                myContext.getString(resId),
+                Boolean.valueOf(myContext.getString(defId))
+        );
+    }
 
     // GET the answer from server
     public static String getResponseFromServer(String url, int timeout) {
@@ -164,7 +170,10 @@ public class Config {
             try {
                 JSONObject jsonAnswer = new JSONObject(severAnswer);
                 String gateID = jsonAnswer.getString("id");
-                String userID = jsonAnswer.getString("user_id");
+                String userID = "";
+                if (jsonAnswer.has("user_id")) {
+                    userID = jsonAnswer.getString("user_id");
+                }
                 return new String[] {gateID, userID};
             } catch (Exception e) {
                 e.printStackTrace();
@@ -294,7 +303,6 @@ public class Config {
         return url;
     }
 
-
     public void setAppLaunchUrl(String gate) {
         // this is executed from PIN parring or Gate history only
         SharedPreferences.Editor ed = sharedPreferences.edit();
@@ -309,6 +317,16 @@ public class Config {
     public void setAisHaWebhookId(String webhookId){
         SharedPreferences.Editor ed = sharedPreferences.edit();
         ed.putString("ais_ha_webhook_id", webhookId);
+        ed.apply();
+    }
+
+    public Boolean getAisAllowDomRequests(){
+        return getBoolPref(R.string.key_setting_app_remote_requests, R.string.default_setting_app_remote_requests);
+    }
+
+    public void setAisAllowDomRequests(Boolean allow){
+        SharedPreferences.Editor ed = sharedPreferences.edit();
+        ed.putBoolean(myContext.getString(R.string.key_setting_app_remote_requests), allow);
         ed.apply();
     }
 

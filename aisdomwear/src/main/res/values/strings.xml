@@ -43,7 +43,6 @@
 
     <string name="share_file_chooser_title">Share with</string>
     <string name="grant_permission">Grant permission</string>
-    <string name="permission_description">AIS dom:API needs the following permission(s):\n</string>
 
     <string name="title_activity_settings">APPLICATION SETTINGS</string>
     <string name="title_activity_other_apps">INTEGRATIONS</string>
@@ -271,7 +270,12 @@
     <string name="are_you_sure_logs_confirmation">Are you sure you want to send logs to AI-Speaker?</string>
     <string name="are_you_sure_yes">YES</string>
     <string name="are_you_sure_no">NO</string>
-    <string name="notification_access_to_location_title">The AIS gateway wants to access your location.</string>
-    <string name="notification_access_to_location_body">Go to the application to add.</string>
+
+    <string name="key_setting_app_remote_requests">setting_app_remote_requests</string>
+    <string name="default_setting_app_remote_requests">false</string>
+    <string name="title_setting_app_remote_requests">AIS dom</string>
+    <string name="summary_setting_app_remote_requests">Send location on AIS gate demand</string>
+
+    <string name="permission_description">AIS dom API needs the permission to GPS</string>
 
 </resources>

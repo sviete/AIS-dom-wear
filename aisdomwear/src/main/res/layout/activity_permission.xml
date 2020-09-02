@@ -4,26 +4,36 @@
     android:layout_width="match_parent"
     android:gravity="center"
     android:layout_height="match_parent">
+    <ImageView
+        android:id="@+id/go_to_config"
+        android:layout_width="34dp"
+        android:layout_height="34dp"
+        android:layout_gravity="top|center"
+        android:contentDescription="@string/todo"
+        android:src="@drawable/ic_ais_logo_small_21_29" />
 
     <TextView
         android:id="@+id/grant_permission_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
         android:layout_marginLeft="32dp"
         android:layout_marginRight="32dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:text="@string/permission_description" />
 
     <LinearLayout
-        android:layout_gravity="center_horizontal"
-        android:gravity="center_horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center_horizontal">
+
         <Button
-            android:layout_marginTop="24dp"
-            android:text="@string/grant_permission"
+            android:id="@+id/grant_permission_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="onOkButton"/>
+            android:layout_marginTop="24dp"
+            android:onClick="onOkButton"
+            android:text="@string/grant_permission" />
     </LinearLayout>
 
 </LinearLayout>
