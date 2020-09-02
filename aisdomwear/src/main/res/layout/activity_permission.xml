@@ -19,6 +19,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginLeft="32dp"
         android:layout_marginRight="32dp"
+        android:gravity="center"
         android:text="@string/permission_description" />
 
     <LinearLayout
