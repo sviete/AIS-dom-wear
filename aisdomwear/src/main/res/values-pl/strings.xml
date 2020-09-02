@@ -276,6 +276,6 @@
     <string name="title_setting_app_remote_requests">AIS dom</string>
     <string name="summary_setting_app_remote_requests">Zezwalaj na zapytania z bramki</string>
 
-    <string name="permission_description">AIS dom API potrzebuje uprawnień do GPS</string>
+    <string name="permission_description">Żeby pytać o lokalizacje urządzenia z bramki AIS dom. Potrzebujemy uprawnień do GPS.</string>
 
 </resources>

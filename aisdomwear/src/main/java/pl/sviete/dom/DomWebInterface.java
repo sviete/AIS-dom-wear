@@ -12,6 +12,10 @@ import android.os.Looper;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.util.Log;
+import android.view.Gravity;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
@@ -27,6 +31,7 @@ import com.android.volley.VolleyError;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
@@ -222,16 +227,6 @@ public class DomWebInterface {
         String logPath = context.getFilesDir().getPath() + "/log.txt";
         try {
             Runtime.getRuntime().exec("logcat -f " + logPath);
-            File fl = new File(logPath);
-            FileInputStream fin = new FileInputStream(fl);
-            BufferedReader reader = new BufferedReader(new InputStreamReader(fin));
-            StringBuilder sb = new StringBuilder();
-            String line = null;
-            while ((line = reader.readLine()) != null) {
-                sb.append(line).append("\n");
-            }
-            reader.close();
-            fin.close();
 
             DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
                 @Override
@@ -249,32 +244,48 @@ public class DomWebInterface {
                             });
 
                             //Yes button clicked
-                            String url = AisCoreUtils.getAisDomCloudWsUrl(true) + "logs";
-                            DomCustomRequest jsObjRequest = new DomCustomRequest(Request.Method.POST, url, sb.toString(), new Response.Listener<JSONObject>() {
-                                @Override
-                                public void onResponse(JSONObject response) {
-                                    // show the info
-                                    Handler handler = new Handler(Looper.getMainLooper());
-                                    handler.post(() -> {
-                                        try {
-                                            Toast.makeText(context, response.getString("status"), Toast.LENGTH_LONG).show();
-                                        } catch (JSONException e) {
-                                            e.printStackTrace();
-                                        }
-                                    });
-                                    return;
+                            try {
+                                File fl = new File(logPath);
+                                FileInputStream fin = null;
+                                fin = new FileInputStream(fl);
+                                BufferedReader reader = new BufferedReader(new InputStreamReader(fin));
+                                StringBuilder sb = new StringBuilder();
+                                String line = null;
+                                while ((line = reader.readLine()) != null) {
+                                    sb.append(line).append("\n");
                                 }
-                            }, new Response.ErrorListener() {
-                                @Override
-                                public void onErrorResponse(VolleyError response) {
-                                    Log.e("AIS auth: ", response.toString());
-                                    Handler handler = new Handler(Looper.getMainLooper());
-                                    handler.post(() -> Toast.makeText(context, response.toString(), Toast.LENGTH_LONG).show());
-                                    return;
-                                }
-                            });
+                                reader.close();
+                                fin.close();
 
-                            AisCoreUtils.getRequestQueue(context.getApplicationContext()).add(jsObjRequest);
+                                String url = AisCoreUtils.getAisDomCloudWsUrl(true) + "logs";
+                                DomCustomRequest jsObjRequest = new DomCustomRequest(Request.Method.POST, url, sb.toString(), new Response.Listener<JSONObject>() {
+                                    @Override
+                                    public void onResponse(JSONObject response) {
+                                        // show the info
+                                        Handler handler = new Handler(Looper.getMainLooper());
+                                        handler.post(() -> {
+                                            try {
+                                                Toast.makeText(context, response.getString("status"), Toast.LENGTH_LONG).show();
+                                            } catch (JSONException e) {
+                                                e.printStackTrace();
+                                            }
+                                        });
+                                        return;
+                                    }
+                                }, new Response.ErrorListener() {
+                                    @Override
+                                    public void onErrorResponse(VolleyError response) {
+                                        Log.e("AIS auth: ", response.toString());
+                                        Handler handler = new Handler(Looper.getMainLooper());
+                                        handler.post(() -> Toast.makeText(context, response.toString(), Toast.LENGTH_LONG).show());
+                                        return;
+                                    }
+                                });
+
+                                AisCoreUtils.getRequestQueue(context.getApplicationContext()).add(jsObjRequest);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
                             break;
 
                         case DialogInterface.BUTTON_NEGATIVE:
@@ -284,10 +295,11 @@ public class DomWebInterface {
                 }
             };
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(context);
-            builder.setMessage(R.string.are_you_sure_logs_confirmation).setPositiveButton(R.string.are_you_sure_yes, dialogClickListener)
-                    .setNegativeButton(R.string.are_you_sure_no, dialogClickListener).show();
-
+            AlertDialog.Builder popupBuilder = new AlertDialog.Builder(context);
+            popupBuilder.setMessage(R.string.are_you_sure_logs_confirmation);
+            popupBuilder.setPositiveButton(R.string.are_you_sure_yes, dialogClickListener);
+            popupBuilder.setNegativeButton(R.string.are_you_sure_no, dialogClickListener);
+            popupBuilder.show();
 
         } catch (IOException e) {
             e.printStackTrace();
