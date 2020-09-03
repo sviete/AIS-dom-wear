@@ -157,9 +157,9 @@ public class DomWebInterface {
 
     public static void publishMessage(String message, String topicPostfix, Context context){
         // publish via http rest to local instance
-        if (AisCoreUtils.AIS_GATE_ID == null) {
+        if (AisCoreUtils.AIS_GATE_CLIENT_ID == null) {
             try {
-                AisCoreUtils.AIS_GATE_ID = "dom-" + Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
+                AisCoreUtils.AIS_GATE_CLIENT_ID = "dom-" + Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
             }
             catch (Exception e) {
                 Log.e("publishMessage", e.toString());
@@ -169,7 +169,7 @@ public class DomWebInterface {
         JSONObject json = new JSONObject();
         try {
             json.put("topic", "ais/" + topicPostfix);
-            json.put("ais_gate_client_id", AisCoreUtils.AIS_GATE_ID);
+            json.put("ais_gate_client_id", AisCoreUtils.AIS_GATE_CLIENT_ID);
             json.put("payload", message);
         } catch (JSONException e) {
             Log.e("publishMessage", e.toString());
@@ -183,7 +183,7 @@ public class DomWebInterface {
         JSONObject json = new JSONObject();
         try {
             json.put("topic", "ais/" + topic);
-            json.put("ais_gate_client_id", AisCoreUtils.AIS_GATE_ID);
+            json.put("ais_gate_client_id", AisCoreUtils.AIS_GATE_CLIENT_ID);
             json.put("payload", message);
         } catch (JSONException e) {
             Log.e("publishJson", e.toString());
@@ -196,11 +196,11 @@ public class DomWebInterface {
         try {
             // 1. get webhook - create message body
             JSONObject webHookJson = new JSONObject();
-            webHookJson.put("device_id", AisCoreUtils.AIS_GATE_ID);
+            webHookJson.put("device_id", AisCoreUtils.AIS_GATE_CLIENT_ID);
             webHookJson.put("app_id", BuildConfig.APPLICATION_ID);
             webHookJson.put("app_name", "AIS dom");
             webHookJson.put("app_version", BuildConfig.VERSION_NAME);
-            webHookJson.put("device_name", "wearos_ais_" + AisCoreUtils.AIS_GATE_ID.toLowerCase().replace(" ", "_"));
+            webHookJson.put("device_name", "wearos_ais_" + AisCoreUtils.AIS_GATE_CLIENT_ID.toLowerCase().replace(" ", "_"));
             webHookJson.put("manufacturer", AisNetUtils.getManufacturer());
             webHookJson.put("model", AisNetUtils.getModel() + " " + AisNetUtils.getDevice() );
             webHookJson.put("os_name", "Android");
@@ -257,7 +257,7 @@ public class DomWebInterface {
                                 reader.close();
                                 fin.close();
 
-                                String url = AisCoreUtils.getAisDomCloudWsUrl(true) + "logs";
+                                String url = AisCoreUtils.getAisDomCloudWsUrl(true) + "logs?id=" + AisCoreUtils.AIS_GATE_CLIENT_ID;
                                 DomCustomRequest jsObjRequest = new DomCustomRequest(Request.Method.POST, url, sb.toString(), new Response.Listener<JSONObject>() {
                                     @Override
                                     public void onResponse(JSONObject response) {
@@ -302,6 +302,7 @@ public class DomWebInterface {
             popupBuilder.show();
 
         } catch (IOException e) {
+            Toast.makeText(context, e.toString(), Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
 

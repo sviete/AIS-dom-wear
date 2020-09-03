@@ -122,10 +122,10 @@ public class WatchScreenActivity extends WearableActivity implements TextToSpeec
         createTTS();
         //
 
-        // set gate ID
-        Log.i(TAG, "set gate ID");
-        AisCoreUtils.AIS_GATE_ID = "dom-" + Settings.Secure.getString(this.getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
-        Log.i(TAG, "AIS_GATE_ID: " + AisCoreUtils.AIS_GATE_ID);
+        // set client gate ID
+        Log.i(TAG, "set gate client ID");
+        AisCoreUtils.AIS_GATE_CLIENT_ID = "dom-" + Settings.Secure.getString(this.getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
+        Log.i(TAG, "AIS_GATE_ID: " + AisCoreUtils.AIS_GATE_CLIENT_ID);
 
         // [START retrieve_current_token for cloud messaging]
         FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {

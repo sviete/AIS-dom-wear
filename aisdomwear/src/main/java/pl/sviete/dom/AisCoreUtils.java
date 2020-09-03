@@ -16,7 +16,7 @@ import static android.content.Context.BATTERY_SERVICE;
 public class AisCoreUtils {
 
     // AIS_GATE ID
-    public static String AIS_GATE_ID = null;
+    public static String AIS_GATE_CLIENT_ID = null;
     public static String AIS_GATE_USER = "";
     public static String AIS_GATE_DESC = "";
 
