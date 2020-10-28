@@ -317,7 +317,7 @@ public class WatchScreenActivity extends WearableActivity implements TextToSpeec
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                //remove text after 1.5sec
+                //remove text after 3.5sec
                 String currText = mSttTextView.getText().toString();
                 if (currText.equals(text)) {
                     mSttTextView.setText("");
@@ -325,7 +325,7 @@ public class WatchScreenActivity extends WearableActivity implements TextToSpeec
                     mDateTextView.setVisibility(View.VISIBLE);
                 }
             }
-        }, 2500);
+        }, 3500);
     }
 
     private void onSttParialResults(String text) {
@@ -405,8 +405,11 @@ public class WatchScreenActivity extends WearableActivity implements TextToSpeec
     }
     private boolean processTTS(String text) {
         Log.d(TAG, "processTTS Called: " + text);
+        // hide time and date
+        mTimeTextView.setVisibility(View.GONE);
+        mDateTextView.setVisibility(View.GONE);
 
-        // display text
+        // display text from ais
         final String text_to_disp = text;
         mSttTextView.setText(text);
         mSttTextView.setGravity(Gravity.CENTER_HORIZONTAL);
