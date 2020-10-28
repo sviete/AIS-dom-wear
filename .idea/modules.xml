@@ -2,10 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/AIS-dom-wear.iml" filepath="$PROJECT_DIR$/AIS-dom-wear.iml" group="AIS-dom-wear" />
-      <module fileurl="file://$PROJECT_DIR$/aisdomwear/AIS-dom-wear-aisdomwear.iml" filepath="$PROJECT_DIR$/aisdomwear/AIS-dom-wear-aisdomwear.iml" group="AIS-dom-wear/aisdomwear" />
-      <module fileurl="file://$PROJECT_DIR$/Projects-AIS-dom-wear.iml" filepath="$PROJECT_DIR$/Projects-AIS-dom-wear.iml" group="AIS-dom-wear" />
-      <module fileurl="file://$PROJECT_DIR$/aisdomwear/aisdomwear.iml" filepath="$PROJECT_DIR$/aisdomwear/aisdomwear.iml" group="AIS-dom-wear/aisdomwear" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/aisdomwear/AIS-dom-wear.aisdomwear.iml" filepath="$PROJECT_DIR$/.idea/modules/aisdomwear/AIS-dom-wear.aisdomwear.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Projects.AIS-dom-wear.iml" filepath="$PROJECT_DIR$/.idea/modules/Projects.AIS-dom-wear.iml" />
     </modules>
   </component>
 </project>
