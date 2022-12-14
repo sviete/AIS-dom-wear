@@ -43,10 +43,7 @@ public class DomWebInterface {
     public static String getDomWsUrl(Context context){
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         final String url = sharedPreferences.getString(context.getString(R.string.key_setting_app_launchurl), "");
-        if (url.startsWith("dom-")){
-            return "http://" + url + ".paczka.pro";
-        }
-        return pl.sviete.dom.AisCoreUtils.getAisDomUrl().replaceAll("/$", "");
+        return "http://" + url + ".paczka.pro";
     }
 
     private static void doPost(JSONObject message, Context context){
@@ -122,13 +119,7 @@ public class DomWebInterface {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError response) {
-                Log.e("AIS auth: ", response.toString());
-                // try to discover gate or inform about connection problem
-                Config config = new Config(context.getApplicationContext());
-                String appLaunchUrl = config.getAppLaunchUrl(false);
-                if (appLaunchUrl.startsWith("dom-")) {
-                    appLaunchUrl = config.getAppLaunchUrl(true);
-                }
+                Log.e("AIS onErrorResponse: ", response.toString());
                 return;
 
             }

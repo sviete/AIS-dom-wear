@@ -2,9 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="pl.sviete.dom">
 
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-feature android:name="android.hardware.type.watch" />
@@ -25,7 +22,8 @@
 
         <activity
             android:name=".WatchScreenActivity"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -34,7 +32,8 @@
 
         <activity
             android:name=".AisAskPermitionActivity"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
@@ -50,19 +49,6 @@
                 <category android:name="android.intent.category.MAIN" />
             </intent-filter>
         </activity>
-
-        <service android:name=".MyFirebaseMessagingService">
-            <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT" />
-            </intent-filter>
-        </service>
-
-        <service
-            android:name="pl.sviete.dom.AisFuseLocationService"
-            android:enabled="true"
-            android:exported="true"
-            android:stopWithTask="false">
-        </service>
 
     </application>
 

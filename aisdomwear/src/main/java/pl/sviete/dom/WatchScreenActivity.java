@@ -32,10 +32,6 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.InstanceIdResult;
 
 import java.util.Locale;
 
@@ -127,24 +123,6 @@ public class WatchScreenActivity extends WearableActivity implements TextToSpeec
         AisCoreUtils.AIS_GATE_CLIENT_ID = "dom-" + Settings.Secure.getString(this.getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
         Log.i(TAG, "AIS_GATE_ID: " + AisCoreUtils.AIS_GATE_CLIENT_ID);
 
-        // [START retrieve_current_token for cloud messaging]
-        FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
-            @Override
-            public void onComplete(@NonNull Task<InstanceIdResult> task) {
-                if (!task.isSuccessful()) {
-                    Log.w(TAG, "getInstanceId failed", task.getException());
-                    return;
-                }
-
-                // Get new Instance ID token
-                String token = task.getResult().getToken();
-
-                // Log and save
-                Log.d(TAG, "FCM Token: " + token);
-                AisCoreUtils.AIS_PUSH_NOTIFICATION_KEY = token;
-            }
-        });
-        // [END retrieve_current_token]
     }
 
     @Override
@@ -226,7 +204,7 @@ public class WatchScreenActivity extends WearableActivity implements TextToSpeec
         // to check the url from settings
         mConfig = new Config(getApplicationContext());
         // get app url with discovery
-        String url = mConfig.getAppLaunchUrl(true);
+        String url = mConfig.getAppLaunchUrl();
         Log.i(TAG, url);
 
         IntentFilter filter = new IntentFilter();

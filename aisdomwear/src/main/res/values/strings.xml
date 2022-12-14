@@ -274,7 +274,6 @@
     <string name="key_setting_app_remote_requests">setting_app_remote_requests</string>
     <string name="default_setting_app_remote_requests">false</string>
     <string name="title_setting_app_remote_requests">AIS</string>
-    <string name="summary_setting_app_remote_requests">Allow requests from gate</string>
 
     <string name="permission_description">AIS dom API needs the permission to GPS</string>
 

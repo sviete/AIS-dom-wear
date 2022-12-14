@@ -15,16 +15,10 @@
             app:dialogTitle=" "
             style="@style/AppPreference.DialogPreference"/>
         />
-        <SwitchPreference
-            android:title="@string/title_setting_app_remote_requests"
-            android:summary="@string/summary_setting_app_remote_requests"
-            android:key="@string/key_setting_app_remote_requests"
-            android:icon="@drawable/ic_reports_to_ais_gate">
-        </SwitchPreference>
         <PreferenceScreen
             android:icon="@drawable/ic_app_logs"
             android:key="pref_ais_dom_email_logs"
-            android:summary="info@sviete.pl"
+            android:summary="info@ai-speaker.com"
             android:title="@string/send_app_logs_title">
         </PreferenceScreen>
         <PreferenceScreen
